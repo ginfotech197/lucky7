@@ -1,0 +1,71 @@
+<div>
+    <style>
+        #menu-public-1 a.nav-link{
+            color: white !important;
+        }
+        #menu-public-1 .dropdown-menu{
+            background-color: #d2d4da !important;
+        }
+        #navbar-iamge{
+            height: 5vh;
+        }
+    </style>
+    <nav id="menu-public-1" class="navbar navbar-expand-lg navbar-light bg-gray-8">
+        <a class="navbar-brand" href="#">
+            <img id="navbar-iamge" class="img-fluid" src="menus/menu_pictures/images1.png">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Dropdown
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#">Action<i class="fas fa-user"></i></a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#">Disabled</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Experiment
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#!exampleToaster">Toaster<i class="fas fa-user"></i></a>
+                        <a class="dropdown-item" href="#!exampleGraph">Graph</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#!exampleAngularMaterial">Material</a>
+                        <a class="dropdown-item" href="#!exampleCookies">Cookies</a>
+                        <a class="dropdown-item" href="#!exampleDialog">Dialog</a>
+                        <a class="dropdown-item" href="#!exampleBarcode">Barcode</a>
+                        <a class="dropdown-item" href="#!exampleQRCode">QR Code</a>
+                        <a class="dropdown-item" href="#!exampleFileUpload">File Upload</a>
+                            <md-icon md-svg-icon="./bower_components/material-design-icons/maps/svg/design/ic_local_airport_24px.svg"></md-icon>
+                            Dialog
+                        </a>
+                    </div>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+        </div>
+    </nav>
+</div>

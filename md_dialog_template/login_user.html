@@ -1,0 +1,35 @@
+<div>
+    <div layout="column" layout-align="center center" layout-fill="layout-fill">
+        <div layout="column" class="loginBox md-whiteframe-z1">
+            <md-toolbar>
+                <h2 class="md-toolbar-tools"><span>Login</span></h2>
+            </md-toolbar>
+            <form name="loginForm">
+                <md-content layout="column" class="md-padding">
+                    <md-input-container>
+                        <label>Username</label>
+                        <input required type="text" ng-model="loginData.userName" name="userName" />
+                        <div ng-messages="loginForm.userName.$error">
+                            <div ng-message="required">This is required.</div>
+                        </div>
+                    </md-input-container>
+                    <md-input-container>
+                        <label>Password</label>
+                        <input required type="password" ng-model="loginData.password" name="password" />
+                        <div ng-messages="loginForm.password.$error" role="alert">
+                            <div ng-message="required">This is required.</div>
+                        </div>
+                    </md-input-container>
+                    {{loginError}}
+                    <div layout="row" layout-align="center center">
+                        <md-button type="submit" class="md-raised md-primary" ng-click="validateUser()">Login</md-button>
+                        <div flex="flex"></div>
+                        <md-button href="" md-no-ink>Forgot Password</md-button>
+                    </div>
+                    <md-divider></md-divider>
+                    <md-button href="#" md-no-ink>Sign Up</md-button>
+                </md-content>
+            </form>
+        </div>
+    </div>
+</div>

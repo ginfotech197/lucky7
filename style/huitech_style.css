@@ -1,0 +1,14 @@
+#xml{
+    color: red;
+}
+body{
+    background-color: #1b1e21;
+}
+#main-view {
+    /*min-height: 99vh !important;*/
+    background-color: #6c757d;
+    /*height: fit-content;*/
+    overflow: hidden;
+    overflow-y: scroll;
+    /*overflow-x:hidden;*/
+}

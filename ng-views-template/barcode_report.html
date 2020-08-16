@@ -1,0 +1,178 @@
+<style type="text/css">
+            .report-table tr th,.report-table tr td{
+                border: 1px solid black !important;
+                font-size: 15px;
+                line-height: 0.5;
+            }
+             a[ng-click]{
+                cursor: pointer;
+            }
+            .tfoot-style{
+                font-size: 12px;
+                background-color: #ACD2DD;
+                line-height: 0px;
+                border: 1px solid black !important;
+
+            }
+        </style>
+        <div class="d-flex col-12">
+            <div class="col-12">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs nav-justified" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" ng-style="tab==1 && selectedTab" href="#" role="tab" ng-click="setTab(1)">Barcode Wise</a>
+                    </li>
+                </ul>
+                <!-- Tab panels -->
+                <div class="tab-content">
+                    <!--Panel 1-->
+                    <div ng-show="isSet(1)">
+                        <div id="row my-tab-1">
+                            <div class="d-flex justify-content-center mb-1">
+                                <div class="col-2" ng-show="!selectDate"><input type="text" class="form-control" ng-model="winning_date" ng-change="changeDateFormat(start_date)" readonly></div>
+                                <div class="col-2" ng-show="selectDate"><input type="date" class="form-control" ng-model="barcode_report_date" ng-change="changeDateFormat(start_date)"></div>
+                                <div class="col-2">
+                                    <select ng-model="select_terminal" class="form-control"> 
+                                        <option value="0" selected disabled>Select Terminal</option>
+                                        <option value="0" selected="All">All</option>
+                                        <option ng-repeat="x in terminalList" value="{{x.user_id}}">
+                                            {{x.user_id}}
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <div class="col-2">
+                                    <select ng-model="select_draw_time" class="form-control">
+                                        <option value="0" selected disabled>Select Draw Time</option>
+                                        <option value="0" selected="All">All</option>
+                                        <option ng-repeat="x in drawTime" value="{{x.id}}">
+                                            {{(x.end_time |limitTo: 5)}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="col-2">
+                                    <input type="text" class="form-control" ng-model="select_barcode" placeholder="Enter Barcode">
+                                </div>
+
+                                <div class="ml-2"><input type="button" class="btn btn-info" value="Show" ng-click="getAllBarcodeDetailsByDate(barcode_report_date,select_terminal,select_draw_time)"></div>
+                            </div>
+
+                            <div class="d-flex justify-content-center">
+                                <div class="loader mt-1" ng-show="isLoading2"></div>
+                            </div>
+
+
+                            <div class="d-flex justify-content-between" ng-show="!isLoading2">
+
+                                <div class="col">
+
+                                <style>
+                                    /* tbody {
+                                        display:block;
+                                        max-height:500px;
+                                        overflow-y:auto;
+                                    }
+                                    thead, tbody tr {
+                                        display:table;
+                                        width:100%;
+                                        table-layout:fixed;
+                                    }
+                                    thead {
+                                        width: calc( 100% - 1em )
+                                    }  */
+                                </style> 
+
+                                    <table cellpadding="0" cellspacing="0" class="table table-hover report-table text-justify">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-left">SL</th>
+                                                <th class="text-left">Terminal Id</th>
+                                                <th class="text-left">D.Time</th>
+                                                <th class="text-left">T.Time</th>
+                                                <th class="text-left">Barcode</th>
+                                                <th class="text-left">Qty</th>
+                                                <th class="text-left">Amount</th>
+                                                <th class="text-left">Prize</th>
+                                                <th class="text-left">Claimed</th>
+                                                <th class="text-left">Particulars</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            <tr ng-repeat="x in barcodeWiseReport | filter : select_barcode" >
+                                                <td class="text-left">{{ $index+1}}</td>
+                                                <td>{{x.user_id}}</td>
+                                                <td>{{x.draw_time +' '+ x.meridiem}}</td>
+                                                <td>{{x.ticket_taken_time}}</td>
+                                                <td class="text-left pl-0">{{x.barcode}}</td>
+                                                <td class="text-right">{{x.quantity |number:2}}</td>
+                                                <td class="text-right">{{x.amount |number:2}}</td>
+                                                <td class="text-right">{{x.prize_value |number:2}}</td>
+                                                <td>{{x.claimed}}</td>
+                                                <td>
+                                                    <a href="#" type="button" data-toggle="modal" data-target="#flipFlop" ng-click="showParticulars($index,x.barcode)">
+                                                        Click here
+                                                    </a>
+                                                </td>
+                                                <!-- <td>
+                                                    <input type="button" value="Claim" class="btn btn-secondary" ng-click="claimedBarcodeForPrize(x,select_game.id)" ng-show="x.is_claimed == 0">
+                                                    <input type="button" value="Claimed" class="btn btn-success" ng-disabled="true" ng-show="x.is_claimed == 1">
+                                                </td> -->
+                                            </tr>
+
+                                            <tr ng-show="barcodeWiseReport.length" class="tfoot-style">
+                                                <td colspan="6" class="text-bold">Grand Total</td>
+                                                <td class="text-right">{{(barcodeWiseReportFooter.total_amount) | number:2}}</td>
+                                                <td class="text-right">{{(barcodeWiseReportFooter.total_prize_value) | number:2}}</td>
+                                                <td colspan="2"></td>
+                                               
+                                            </tr>
+                                            <tr class="text-center tfoot-style" ng-show="barcodeWiseReport.length">
+                                                <td colspan="6"></td>
+                                                <td colspan="4" class="font-weight-bold text-left">Net Balance &nbsp;
+                                                    {{((barcodeWiseReportFooter.total_amount) - (barcodeWiseReportFooter.total_prize_value)) | number:2}}
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    
+                                    <div class="d-flex justify-content-center" ng-show="alertMsg2">
+                                        <div>No records found</div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                            <!-- The modal -->
+                            <div class="modal fade" id="flipFlop" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title" id="modalLabel">View details</h4>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body" style="word-wrap: break-word">
+                                            {{barcodeWiseReport[target].particulars}}
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            
+                        </div>
+								<div class="d-flex" ng-show="false">
+									<div class="col-3"><pre>barcodeWiseReport={{barcodeWiseReport | json}}</pre></div>
+									<div class="col-3">{{select_terminal}}{{select_draw_time}}</div>
+								</div>
+        
+                    </div>
+                </div>
+            </div>
+        </div>

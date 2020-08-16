@@ -1,0 +1,72 @@
+
+<style>
+    md-input-container{
+        padding: 0px !important;
+        margin: 0px !important;
+    }
+    .md-char-counter{
+        display: none;
+        visibility: hidden;
+    }
+    #updateProfile-form{
+        width: 30vw !important;
+    }
+</style>
+<div class="md-padding" ng-cloak layout="column" id="updateProfile-form">
+    <div>
+        <md-card>
+            <form name="profileForm" role="form">
+                <md-card-content>
+                    <div layout="row" class="m-0 p-3">
+                        <md-input-container>
+                            <label>Persons Name</label>
+                            <input name ="peopleName" ng-model="persons.person_name"  md-maxlength="100" minlength="1" required>
+                            <div ng-messages="profileForm.peopleName.$error" ng-show="profileForm.peopleName.$dirty">
+                                <div ng-message="required">This is required!</div>
+                                <div ng-message="md-maxlength">That's too long!</div>
+                                <div ng-message="minlength">That's too short!</div>
+                            </div>
+                        </md-input-container>
+                    </div>
+
+                    <md-input-container class="col-4 m-1">
+                        <label>Contact</label>
+                        <input name="contact" ng-model="persons.mobile1" md-maxlength="10" minlength="10" class="mr-3" required>
+                        <div ng-messages="profileForm.contact.$error" ng-show="profileForm.contact.$dirty">
+                            <div ng-message="required">This is required!</div>
+                            <div ng-message="md-maxlength">That's too long!</div>
+                            <div ng-message="minlength">That's too short!</div>
+                        </div>
+                    </md-input-container>
+
+                    <md-input-container class="col-4 m-1">
+                        <label>Contact 2</label>
+                        <input name="contact2" ng-model="persons.mobile2" md-maxlength="10" minlength="10" class="mr-3">
+                        <div ng-messages="profileForm.contact2.$error" ng-show="profileForm.contact2.$dirty">
+                            <div ng-message="required">This is required!</div>
+                            <div ng-message="md-maxlength">That's too long!</div>
+                            <div ng-message="minlength">That's too short!</div>
+                        </div>
+                    </md-input-container>
+
+                    <div layout="row" class="p-3 m-2">
+                        <md-input-container>
+                            <label>People Types</label>
+                            <md-select required name="peopleTypes" ng-model="persons.person_type_id" class="mr-3">
+                                <md-option><em>None</em></md-option>
+                                <md-option ng-repeat="catagory in categories" ng-value="catagory.id" >
+                                    {{catagory.person_type_name}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                </div>
+            </md-card-content>
+            </form>
+            <md-button ng-disabled="!profileForm.$dirty" href="#" ng-click="updateUser(persons)" class="md-raised md-primary" >Update</md-button>
+        </md-card>
+    </div>
+    </div>
+
+<!--    <pre>participant={{participant | json}}</pre>-->
+</div>
+

@@ -1,0 +1,147 @@
+<style type="text/css">
+            h1 
+            { 
+                text-shadow:3px 1px #0abffb; 
+                font-size:4vw;
+            } 
+        </style>
+        <div class="d-flex col-12">
+            <div class="col-12">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs nav-justified indigo" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" ng-style="tab==1 && selectedTab" href="#" role="tab" ng-click="setTab(1)">Help Terminal</a>
+                    </li>
+
+                </ul>
+                <!-- Tab panels -->
+                <div class="tab-content">
+                    <!--Panel 1-->
+                    <div ng-show="isSet(1)">
+                        <div id="row my-tab-1" class="bg-cpanel">
+                            <form name="gameForm" class="form-horizontal">
+                                <div class="d-flex justify-content-center ">
+                                    <div class="col">
+                                         
+                                        <div class="d-flex mt-1">
+                                            <div class="col-4">
+                                                <h1>{{ title }}</h1>
+                                            </div>
+                                            <div class="col-4" >
+                                                <b>Draw Time: &nbsp;</b>{{currentTime.end_time  | limitTo: 5}}{{currentTime.meridiem}}
+                                            </div>
+                                           
+                                            <div class="col-4" ><b>Balance: &nbsp;</b>{{(activeTerminalDetails.current_balance) | number:2}}</div>
+                                        </div>
+                                        <div class="d-flex  mt-1">
+                                            
+                                        <table  style="width:auto !important;height:max-content" class="table-responsive" border="0" align="center">
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="13"><h2><br></h2></td>
+                                        </tr>
+
+                                        <tr id="heading-style" class="text-center">
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+
+                                            <td>1</td>
+                                            <td>2</td>
+                                            <td>3</td>
+                                            <td>4</td>
+                                            <td>5</td>
+                                            <td>6</td>
+                                            <td>7</td>
+                                            <td>8</td>
+                                            <td>9</td>
+                                            <td>0</td>
+                                            <td>Qty</td>
+                                            <td>Amount</td>
+                                        </tr>
+
+                                        <tr class="text-center">
+                                            <td><a href="#" ng-click="getActiveDrawTime()"><i class="fas fa-sync-alt"></i></a></td>
+                                            <td> 
+                                            
+                                                <select ng-model="draw_id" class="form-control" required>
+                                                    <option selected disabled>Select Time </option>
+                                                    <option ng-repeat="x in timeList" value="{{x.draw_master_id}}">
+                                                        {{(x.end_time |limitTo: 5) + ' '+ (x.meridiem)}}
+                                                    </option>
+                                                </select>                                             
+                                             
+                                             </td>
+
+
+                                            <td> 
+                                            
+                                            <select required
+                                                    class="form-control "
+                                                    data-ng-model="terminal"
+                                                    data-ng-options="x as x.user_id for x in terminalList" ng-change="getTerminalBalance(terminal.person_id)">
+                                            </select>
+                                            
+                                             
+                                             
+                                             </td>
+                                            <td></td>
+
+                                            <td><input type="text" ng-model="seriesOne[1]" class="inputBox form-control"></td>
+                                            <td><input type="text" ng-model="seriesOne[2]" class="inputBox form-control"></td>
+                                            <td><input type="text" ng-model="seriesOne[3]" class="inputBox form-control"></td>
+                                            <td><input type="text" ng-model="seriesOne[4]" class="inputBox form-control"></td>
+                                            <td><input type="text" ng-model="seriesOne[5]" class="inputBox form-control"></td>
+                                            <td><input type="text" ng-model="seriesOne[6]" class="inputBox form-control"></td>
+                                            <td><input type="text" ng-model="seriesOne[7]" class="inputBox form-control"></td>
+                                            <td><input type="text" ng-model="seriesOne[8]" class="inputBox form-control"></td>
+                                            <td><input type="text" ng-model="seriesOne[9]" class="inputBox form-control"></td>
+                                            <td><input type="text" ng-model="seriesOne[0]" class="inputBox form-control"></td>
+                                            <td><input type="text" style="height:30px;width:70px" class="form-control text-right" ng-model="totalBoxSum1" readonly></td>
+                                            <td><input type="text" style="height:30px;width:70px" class="form-control text-right" ng-model="totalTicketBuy1" readonly></td>
+                                           
+                                           
+                                        </tr>
+
+                                                                             
+                                                                               
+
+                                    </tbody>
+
+                                </table>   
+
+                                        </div>
+                                      
+                                      
+
+
+                                        <div class="d-flex justify-content-center mt-2">
+                                            <div class="col-4">
+                                                <input type="button" ng-click="submitGameValues(draw_id,terminal,seriesOne)" ng-disabled="gameForm.$invalid" value="Save"/>
+                                                <input type="button" ng-click="clearDigitInputBox()" value="Clear"/>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-center mt-2">
+                                            <div class="">
+                                                <span ng-show="submitStatus" class="text-success">Record successfully added</span>
+                                                <span ng-show="updateStatus" class="text-success">Update successful</span>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="d-flex mt-1" ng-show="false">
+                                            <div class="col-3"> 
+                                                <pre>currentTime={{currentTime | json}}</pre>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div> <!--//End of my tab1//-->
+                    </div>                              
+
+                </div>
+            </div>
+        </div>

@@ -1,0 +1,137 @@
+<div class="d-flex col-12">
+    <div class="col-12">
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs nav-justified" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" ng-style="tab==1 && selectedTab" href="#" role="tab" ng-click="setTab(1)"><i class="fas fa-user-graduate"></i></i>Create Terminal</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" ng-style="tab==2 && selectedTab" href="#" role="tab" ng-click="setTab(2)"><i class="fa fa-envelope"></i>Terminal list</a>
+            </li>
+        </ul>
+        <!-- Tab panels -->
+        <div class="tab-content">
+            <!--Panel 1-->
+            <div ng-show="isSet(1)">
+                <div id="row my-tab-1" class="bg-cpanel">
+                    <form name="terminalForm" class="form-horizontal">
+                        <div class="d-flex justify-content-center ">
+                            <div class="col">
+                                <div class="d-flex mt-1">
+                                    <div class="col-3">Select Stockist</div>
+                                    <div class="col-3">
+                                        <select class="form-control" ng-change="getNextUserId(terminal.stockist.serial_number,terminal.stockist.id)"
+                                                data-ng-model="terminal.stockist"
+                                                data-ng-options="st as st.user_id for st in stockistList">
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex mt-1">
+                                    <label  class="col-3">Terminal Name<span class="text-danger"></span></label>
+                                    <div class="col-3">
+                                        <input type="text" class="form-control" ng-model="terminal.people_name" required/>
+                                    </div>
+                                </div>
+                                <div class="d-flex  mt-1">
+                                    <label  class="col-3">Login Id<span class="text-danger"></span></label>
+                                    <div class="col-3">
+                                        <input type="text" class="form-control" ng-model="terminal.user_id"  readonly/>
+                                    </div>
+                                </div>
+                                <div class="d-flex mt-1">
+                                    <label  class="col-3">Password<span class="text-danger"></span></label>
+                                    <div class="col-3">
+                                        <input type="text" class="form-control" ng-model="terminal.user_password" required/>
+                                    </div>
+                                    <div class="col-3">
+                                        <input type="button" class="btn btn-success"  ng-click="randomPass(8,true,true,true)" value="Generate password" />
+                                    </div>
+                                </div>
+
+                                <div class="d-flex mt-1">
+                                    <label  class="col-3">Commission <b>(out of {{terminal.stockist.commission}}%)</b></label>
+                                    <div class="col-3">
+                                        <input type="text" disallow-spaces class="form-control" ng-model="terminal.commission"/>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex justify-content-center mt-2">
+                                    <div class="col-4">
+                                        <input type="button" class="btn btn-secondary"  ng-click="saveTerminalData(terminal)" ng-disabled="terminalForm.$invalid" value="Save" ng-show="!isUpdateable"/>
+                                        <input type="button" class="btn btn-secondary"  ng-click="resetTerminalDetails()" value="Reset"/>
+                                        <input type="button" class="btn btn-secondary ml-2"  ng-click="updateTerminalByTerminalId(terminal,terminal.id)" value="Update" ng-show="isUpdateable" ng-disabled="terminalForm.$pristine"/>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-center mt-2">
+                                    <div class="">
+                                        <span ng-show="submitStatus" class="text-success">Record successfully added</span>
+                                        <span ng-show="updateStatus" class="text-success">Update successful</span>
+                                    </div>
+                                </div>
+                                <div class="d-flex mt-1" ng-show="false">
+                                    <div class="col-6">
+                                        <pre>terminal={{terminal | json}}</pre>
+                                    </div>
+                                    <div class="col-6">
+                                        <pre>terminalList={{terminalList | json}}</pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div> <!--//End of my tab1//-->
+            </div>
+
+            <div ng-show="isSet(2)">
+                <div id="my-tab-2">
+                    <style type="text/css">
+                        .bee{
+                            background-color: #d9edf7;
+                        }
+                        .banana{
+                            background-color: #c4e3f3;
+                        }
+                        #stockist-table-div table th{
+                            background-color: #1b6d85;
+                            color: #a6e1ec;
+                            cursor: pointer;
+                        }
+                        a[ng-click]{
+                            cursor: pointer;
+                        }
+
+                    </style>
+                    <p><input type="text" ng-model="searchItem"><span class="glyphicon glyphicon-search"></span> Search </p>
+                    <div id="stockist-table-div" class="d-flex">
+                        <table cellpadding="0" cellspacing="0" class="table table-bordered">
+                            <tr>
+                                <th>SL</th>
+                                <th >Terminal</th>
+                                <th>Login Id</th>
+                                <th>Password</th>
+                                <th>Terminal's commission</th>
+                                <th>Stockist</th>
+                                <th>Stockist's commission</th>
+                                <th>Edit</th>
+                            </tr>
+                            <tbody ng-repeat="x in terminalList | filter : searchItem  | orderBy:sort.active:sort.descending">
+                            <tr ng-class-even="'banana'" ng-class-odd="'bee'">
+                                <td>{{ $index+1}}</td>
+                                <td>{{x.people_name}}</td>
+                                <td>{{x.user_id}}</td>
+                                <td>{{x.user_password}}</td>
+                                <td>{{x.terminal_commission}}</td>
+                                <td>{{x.stockist_name}}</td>
+                                <td>{{x.stockist_commission}}</td>
+                                <td ng-click="updateTerminalFromTable(x)"><a href="#">Edit</a></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

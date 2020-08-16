@@ -1,0 +1,159 @@
+
+<div class="container-fluid ">
+	<style>
+		h1 { 
+			margin: 30px; 
+			/* font-family: "Lobster", cursive;  */
+			text-shadow: 3px 0 #232931; 
+			font-size: 2.5rem; 
+			color: #4ecca3; 
+			text-align: center; 
+		} 
+		hr.new5 {
+			border: 10px solid green;
+			border-radius: 5px;
+		}
+		.radio-item {
+			display: inline-block;
+			position: relative;
+			padding: 0 6px;
+			margin: 10px 0 0;
+		}
+
+		.radio-item input[type='radio'] {
+		display: none;
+		}
+
+		.radio-item label {
+		color: #666;
+		font-weight: normal;
+		}
+
+		.radio-item label:before {
+		content: " ";
+		display: inline-block;
+		position: relative;
+		top: 5px;
+		margin: 0 5px 0 0;
+		width: 20px;
+		height: 20px;
+		border-radius: 11px;
+		border: 2px solid #004c97;
+		background-color: transparent;
+		}
+
+		.radio-item input[type=radio]:checked + label:after {
+		border-radius: 11px;
+		width: 12px;
+		height: 12px;
+		position: absolute;
+		top: 9px;
+		left: 10px;
+		content: " ";
+		display: block;
+		background: #004c97;
+		}
+	</style>
+
+	<h1>Add manual result</h1>
+	<div class="row">
+		<div class="col-12">
+
+			<form>
+				<div class="form-row">
+					<div class="col-3">
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<span class="input-group-text" id="basic-addon1">Time</span>
+							</div>
+							<select required
+									class=""
+									data-ng-model="manualResultTime"
+									data-ng-options="x as (x.end_time + ' ' + x.meridiem) for x in digitDrawTime" data-ng-change="getTotalSaleDataByDraw(manualResultTime)">
+							</select>
+						</div>
+					</div>
+					<div class="col" ng-repeat="x in seriesList">					
+						<label> <b>{{x.series_name}}</b>
+							<input type="radio" ng-model="$parent.manualResultObj" ng-value="x">
+						</label>
+					</div>
+
+				</div>
+				<div class="form-row mt-5">
+					<div class="col-3"></div>
+					<div class="col-3">
+						<button type="submit" ng-click="submitManualResult(manualResultObj,manualResultTime)" class="btn btn-primary btn-lg" style="padding:.4rem 1rem;font-size:1.25rem">Submit</button>
+					</div>
+					
+				</div>
+			</form>		
+
+		</div>
+	</div>
+	<div class="d-flex justify-content-center" ng-show="totalSaleByDraw.length==0">
+		<div>No sale found</div>
+	</div>
+	<div class="row mt-5">
+		<div class="col-4"></div>
+		<div class="col-4 border border-secondary">
+			
+			<table cellpadding="0" cellspacing="0" class="table table-bordered table-hover report-table text-justify">
+				<thead>
+					<tr>
+						<th class="p-0 text-center">Game Name</th>
+						<th class="p-0  text-center">TotalSale</th>
+						<th class="p-0  text-center">TotalWinning</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="x in totalSaleByDraw">
+						<td class="p-0">
+							<b>{{x.series_name}}</b>
+						</td>
+						<td class="p-0 text-center"> <b>{{x.total}}</b></td>
+						<td class="p-0 "><b>{{x.total_winning}}</b></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<div class="col-4"></div>
+	</div>
+
+
+
+
+
+	<hr class="new5">
+	<h1>Update payout</h1>
+	<div class="row">
+		<div class="col-12">
+			<form>
+				<div class="form-row">
+					<div class="col-3"></div>
+					<div class="col">
+						<label>
+							<input type="radio" ng-model="payoutValue" value="high">
+							<b>HIGH</b>
+						  </label>
+					</div>
+					<div class="col">				 
+						  <label>
+							<input type="radio" ng-model="payoutValue" value="low">
+							<b>LOW</b>
+						  </label><br/>
+					</div>
+
+				</div>
+				<div class="form-row mt-5">
+					<div class="col-3"></div>
+					<div class="col-3">
+						<button type="submit" ng-click="submitGamePayout(payoutValue)" class="btn btn-primary btn-lg" style="padding:.4rem 1rem;font-size:1.25rem">Submit</button>
+					</div>
+					
+				</div>
+			</form>		
+		</div>
+	</div>
+</div>

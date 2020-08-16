@@ -1,0 +1,201 @@
+<style>
+    #register-product{
+        /*background-color: #020532;*/
+        padding-top: 75px;
+        background-color: lightgrey;
+        min-height: 100vh;
+    }
+    #register-product label,#register-product input,#register-product md-select,#register-product md-option{
+        color: black !important;
+        font-size: 2vh !important;
+    }
+    #register-product input{
+        background-color: transparent;
+    }
+    #register-product .md-char-counter{
+        /*color: white;*/
+        font-size: 1vh;
+    }
+    #register-product .ng-pristine{
+        /*color: white;*/
+        font-size: 1vh;
+    }
+    input::placeholder {
+        color: #3c3c3c !important;
+        font-size: 1vh;
+        font-style: italic;
+    }
+    md-select::aria-label {
+        color: #0b2e13 !important;
+        font-size: 1vh;
+        font-style: italic;
+    }
+
+    .st-sort-ascent:before {
+        content: '\25B2';
+    }
+
+    .st-sort-descent:before {
+        content: '\25BC';
+    }
+
+
+
+
+
+
+</style>
+<!--This is our main woking section-->
+<div class="card" id="register-product">
+    <div class="card-header">
+        <h1 style="text-align: center; font-size: 3vh">Product Entry</h1>
+    </div>
+    <div class="card-body">
+        <div class="d-flex">
+            <div class="col">
+                <form name="productForm" role="form">
+                    <div layout="row" class="m-3">
+                        <md-input-container>
+                            <label>Model Name</label>
+                            <input name ="modelNumber" ng-model="product.model_number" placeholder="Model No"  md-maxlength="100" minlength="1" required>
+                            <div ng-messages="productForm.modelNumber.$error" ng-show="productForm.modelNumber.$dirty">
+                            <div ng-message="required">This is required!</div>
+                            <div ng-message="md-maxlength">That's too long!</div>
+                            <div ng-message="minlength">That's too short!</div>
+                              </div>
+                        </md-input-container>
+                    </div>
+
+                    <md-input-container class="m-3">
+                            <label>Product Name</label>
+                            <input name="productName" ng-model="product.product_name" md-maxlength="100" minlength="1" required>
+                            <div ng-messages="productForm.productName.$error" ng-show="productForm.productName.$dirty">
+                                <div ng-message="required">This is required!</div>
+                                <div ng-message="md-maxlength">That's too long!</div>
+                                <div ng-message="minlength">That's too short!</div>
+                            </div>
+
+                        </md-input-container>
+
+
+                    <div layout="row" class="m-0">
+                            <md-input-container class="col-4" >
+                                <label class="mt-0"> Product Category</label>
+                                <md-select required name="category" ng-model="product.product_category_id" placeholder="Enter Category" >
+                                    <md-option><em>None</em></md-option>
+                                    <md-option ng-repeat="productCategories in allProductCategoriesList" ng-value="productCategories.id" >
+                                        {{productCategories.category_name}}
+                                    </md-option>
+                                </md-select>
+                            </md-input-container>
+                    </div>
+
+                    <div layout="row" class="m-2">
+                            <md-input-container class="col-4">
+                                <label>Rate</label>
+                                <md-select required name="rate" ng-model="product.price_code_id" class="mr-3">
+                                    <md-option><em>None</em></md-option>
+                                    <md-option ng-repeat="price_code in allPriceCodes" ng-value="price_code.id" >
+                                        {{price_code.price_code_name }}
+                                    </md-option>
+                                </md-select>
+                            </md-input-container>
+                        </div>
+                </form>
+                <md-button ng-show="!product.id" ng-disabled="productForm.$invalid" class="btn-info" ng-click="saveProduct(product)">Save</md-button>
+                <md-button  class="btn-info" ng-show="product.id" ng-click="updateProduct(product)">Update</md-button>
+                <md-button  class="btn-info" ng-show="product.id"  ng-click="cancel()">cancel</md-button>
+            </div>
+
+<!--            right div-->
+            <div class="col">
+
+                <div class="col-12" style="background-color: lightgrey; text-align: center;" >
+                    <table id="coures-table"  st-table="rowCollection" st-safe-src="allProductsList" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <div class="d-flex">
+                                    <div>
+                                        <button ng-click="getProductExcelData()">GET DATA IN EXCEL</button>
+                                    </div>
+                                    <div class="col md-form mt-0">
+                                        <input class="form-control" ng-model="productSearch" type="text" placeholder="Search" aria-label="Search">
+                                    </div>
+                                </div>
+                            </tr>
+                            <tr>
+                            <th colspan="1">SL</th>
+                            <th  st-sort="item.product_name" colspan="1">Product Name</th>
+                            <th colspan="1">Model Number</th>
+                            <th st-sort="category_name" colspan="1">Product Category</th>
+                            <th colspan="1">Code</th>
+                            <th colspan="2" >Action</th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="item in allProductsList | filter:productSearch">
+                            <td class="">{{$index+1}}</td>
+                            <td class="align-left">{{item.product_name}}</td>
+                            <td class="">{{item.model_number}}</td>
+                            <td class="">{{item.category_name}}</td>
+                            <td class="">{{item.price_code_name}}</td>
+                            <td class="">
+                                <a href="#" ng-click="update(item)">Update</a>
+<!--                                <button type="button" class="btn btn-default btn-sm" ng-click="updateProduct(item)">-->
+<!--                                    <span class="glyphicon glyphicon-pencil"></span> UPDATE-->
+<!--                                </button>-->
+                            </td>
+                            <td class="">
+                                <a href="#" ng-click="deleteProduct(item,$index)">Delete</a>
+<!--                                <button type="button" class="btn btn-default btn-sm" ng-click="deleteProduct(item,$index)">-->
+<!--                                    <span class="glyphicon glyphicon-pencil"></span> DELETE-->
+<!--                                </button>-->
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<!--following part for development area-->
+<div class="col-2">
+    <md-switch ng-model="developerMode.isDeveloperDivShowable" aria-label="Switch 1" ng-true-value="true" ng-false-value="false" class="md-warn" ng-if="developerMode.isEnabled">
+        {{ developerMode.isDeveloperDivShowable }}
+    </md-switch>
+</div>
+
+<section class="Developer Area" ng-if="developerMode.isDeveloperDivShowable">
+    <div class="card">
+        <div class="card-header">
+            This is developer area
+        </div>
+        <div class="card-body">
+            <div class="d-flex">
+                <div class="col">
+                    <pre>
+                        allProductsList={{allProductsList | json}}
+                    </pre>
+                </div>
+                <div class="col">
+                    allPriceCodes={{allPriceCodes | json}}
+                    response={{response | json}}
+                    product={{product | json}}
+                    allRates={{allRates | json }}
+
+                </div>
+                <div class="col">
+                    allProductCategoriesList={{allProductCategoriesList | json}}
+                    <br><hr>
+                    product={{product| json}}
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>

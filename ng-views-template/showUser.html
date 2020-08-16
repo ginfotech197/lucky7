@@ -1,0 +1,41 @@
+<div class="card" id="admin-acceptance-status">
+    <div class="card-header">
+    </div>
+
+
+    <div class="card-body">
+        <div class="col-12" style="background-color: lightgrey; text-align: center;" >
+            <table id="coures-table" st-table=""  class="table table-striped">
+                <thead>
+                <tr>
+                    <th colspan="1">SL</th>
+                    <th colspan="1">Person Name</th>
+                    <th colspan="1">Contact 1</th>
+                    <th colspan="1">Contact 2</th>
+                    <th colspan="1">Person type</th>
+                    <th colspan="1">Update</th>
+                    <th colspan="1">Delete</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in allPersons">
+                    <td class="">{{$index+1}}</td>
+                    <td class="">{{item.person_name}}</td>
+                    <td class="">{{item.mobile1}}</td>
+                    <td class="">{{item.mobile2}}</td>
+                    <td class="">{{item.person_type_name}}</td>
+                    <td class="">
+                        <button type="button" class="btn btn-default btn-sm" ng-click="updateEntrant(item)">
+                        <span class="glyphicon glyphicon-pencil"></span> UPDATE
+                    </button>
+                    </td>
+                    <td class="">
+                        <a ng-click="deleteUser(item)"><i class="fas fa-backspace"></i></a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

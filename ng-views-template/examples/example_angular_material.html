@@ -1,0 +1,40 @@
+
+<section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+    <md-button class="md-raised">Button</md-button>
+    <md-button class="md-raised md-primary">Primary</md-button>
+    <md-button ng-disabled="true" class="md-raised md-primary">Disabled</md-button>
+    <md-button class="md-raised md-warn">Warn</md-button>
+    <div class="label">Raised</div>
+</section>
+<h1>{{message}}</h1>
+<div class="d-flex">
+    <div class="col">
+        <md-autocomplete md-selected-item="selectedItem" md-search-text="searchText" md-items="item in getMatches(searchText)" md-item-text="item.display">
+            <md-item-template>
+                <span md-highlight-text="searchText">{{item.display}}</span>
+            </md-item-template>
+            <md-not-found>
+                No matches found.
+            </md-not-found>
+        </md-autocomplete>
+    </div>
+    <div class="col">
+        {{selectedItem.display}}
+    </div>
+</div>
+<div class="d-flex">
+    <div class="col">
+        bower install material-design-icons
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <md-button class="md-icon-button" aria-label="Settings">
+                    <md-icon md-svg-icon="./bower_components/material-design-icons/maps/svg/design/ic_local_airport_24px.svg"></md-icon>
+                </md-button>
+                <h2>
+                    <span class="md-title">Get Lost!</span>
+                </h2>
+            </div>
+        </md-toolbar>
+    </div>
+    <div class="col"></div>
+</div>

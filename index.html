@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Mobirise v4.8.8, mobirisethemes.com">
+  <!-- <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1"> -->
+  <meta name="viewport" content="width=1024">
+  <link rel="shortcut icon" href="img/logo.png" type="image/x-icon">
+  <meta name="description" content="">
+  <title>Lucky 7</title>
+
+
+
+  <!-- <link rel="stylesheet" href="assets/web/assets/mobirise-icons/mobirise-icons.css"> -->
+  <!-- <link rel="stylesheet" href="assets/tether/tether.min.css"> -->
+  <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap-grid.min.css">
+  <!-- <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap-reboot.min.css"> -->
+  <!-- <link rel="stylesheet" href="assets/socicon/css/styles.css"> -->
+  <!-- <link rel="stylesheet" href="assets/mobirise/css/mbr-additional.css" type="text/css"> -->
+  <link rel="stylesheet" href="style/styles.css">
+  <link rel="stylesheet" href="style/huitech_color.css">
+
+
+  <style>
+    .main-view{
+            width:100vw;
+            height:100vh;
+            overflow-y:scroll;
+        }
+        .inner-border::-webkit-scrollbar { 
+                display: none; 
+        } 
+  </style>
+  
+</head>
+<body ng-app="myApp">
+<div data-ng-controller="MainController">
+    <section class="menu cid-rbmbAelA8q" once="menu" id="menu1-0"> 
+        <div ng-include="'ng-menus/admin_menu.html'" ng-show="loginDetails.isLoggedIn==true && loginDetails.person.person_category_id==1">
+        </div>
+        <div ng-include="'ng-menus/stockist_menu.html'" ng-show="loginDetails.isLoggedIn==true && loginDetails.person.person_category_id==4"></div>      
+
+    </section>
+    <toaster-container toaster-options="{'time-out': 5000}"></toaster-container>
+<!--  All content will be replaced here-->
+    <div ng-view id="main-view" class="main-view inner-border">
+
+    </div>
+</div>
+
+  <script src="node_modules/jquery/dist/jquery.min.js"></script>
+  <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="js/app.js"></script>
+  <script src="node_modules/angular/angular.js"></script>
+  <script src="node_modules/angular-cookies/angular-cookies.js"></script>
+  <script src="node_modules/angular-route/angular-route.js"></script>
+  <script src="node_modules/angular-resource/angular-resource.min.js"></script>
+
+  <script src="assets/popper/popper.min.js"></script>
+  <script src="assets/tether/tether.min.js"></script>
+
+
+
+
+<!--    x-editable-->
+    <link href="node_modules/angular-xeditable/dist/css/xeditable.min.css" rel="stylesheet">
+    <script src="node_modules/angular-xeditable/dist/js/xeditable.min.js"></script>
+
+<!--Smart table-->
+    <script src="node_modules/angular-smart-table/dist/smart-table.min.js"></script>
+    <script src="node_modules/satellizer/dist/satellizer.js"></script>
+
+
+  <script src="node_modules/angular-md5/angular-md5.js"></script>
+
+<!--Our Controllers-->
+  <script src="angular-controller/MyAppController.js"></script>
+  <script src="angular-controller/RouteConfig.js"></script>
+  <script src="angular-controller/MainController.js"></script>
+  <script src="angular-controller/TerminalController.js"></script>
+  <script src="angular-controller/StockistController.js"></script>
+  <script src="angular-controller/AdminController.js"></script>
+  <script src="angular-controller/PlayController.js"></script>
+  <script src="angular-controller/ReportTerminalController.js"></script>
+  <script src="angular-controller/StockistLimitController.js"></script>
+  <script src="angular-controller/TerminalLimitController.js"></script>
+  <script src="angular-controller/PayoutSettingController.js"></script>
+  <script src="angular-controller/ManualResultController.js"></script>
+  <script src="angular-controller/CustomerSaleReportController.js"></script>
+  <script src="angular-controller/BarcodeReportController.js"></script>
+  <script src="angular-controller/DrawReportController.js"></script>
+  <script src="angular-controller/ResultController.js"></script>
+  <script src="angular-controller/EmergencyResultController.js"></script>
+  <script src="angular-controller/HelpTerminalController.js"></script>
+  <script src="angular-controller/StockistHomeController.js"></script>
+
+
+
+
+
+<!--End of Our Controllers-->
+  <!-- Angular Material requires Angular.js Libraries -->
+  <script src="node_modules/angular-animate/angular-animate.js"></script>
+  <script src="node_modules/angular-aria/angular-aria.js"></script>
+  <script src="node_modules/angular-messages/angular-messages.js"></script>
+
+
+  <!-- Angular Material Library -->
+  <script src="node_modules/angular-material/angular-material.js"></script>
+
+  <link rel="stylesheet" href="node_modules/angular-material/angular-material.css">
+  <!--    Toaster-->
+  <script src="node_modules/angularjs-toaster/toaster.js"></script>
+  <link rel="stylesheet" href="node_modules/angularjs-toaster/toaster.css">
+
+  <!--    Chart-->
+  <script src="node_modules/chart.js/dist/Chart.js"></script>
+  <script src="node_modules/angular-chart.js/dist/angular-chart.min.js"></script>
+
+  <script src="node_modules/angular-barcode/dist/angular-barcode.js"></script>
+
+
+  <!--qrcode-->
+  <script src="node_modules/qrcode-generator/qrcode.js"></script>
+  <script src="node_modules/qrcode-generator/qrcode_UTF8.js"></script>
+  <script src="node_modules/angular-qrcode/angular-qrcode.js"></script>
+
+
+  <!--Alasql and Save to excel-->
+  <script src="node_modules/alasql/dist/alasql.min.js"></script>
+  <script src="node_modules/xlsx/dist/xlsx.core.min.js"></script>
+
+  <script type="text/javascript" src="node_modules/ng-image-input-with-preview/dist/ng-image-input-with-preview.js"></script>
+
+<!--data picker-->
+<script src="node_modules/angularjs-datepicker/dist/angular-datepicker.min.js"></script>
+<link rel="stylesheet" href="node_modules/angularjs-datepicker/dist/angular-datepicker.min.css"/>
+<!--fontawesome-->
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
+
+<script src="node_modules/underscore/underscore-min.js"></script>
+
+
+    <!--https://www.npmjs.com/package/angular-local-storage-->
+<script src="node_modules/angular-local-storage/dist/angular-local-storage.min.js"></script>
+
+
+<!--moment-->
+<script src="node_modules/moment/min/moment.min.js"></script>
+
+
+</body>
+</html>

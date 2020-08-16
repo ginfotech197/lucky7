@@ -1,0 +1,116 @@
+<style >
+    #admin-payment-status{
+
+        margin-top: 60px ;
+    }
+    #unpaidStatusTable td .form-control{
+        padding: 0px !important;
+        line-height: normal !important;
+        min-height: unset !important;
+    }
+    .editable-buttons button{
+        /*padding: 0px !important;*/
+    }
+    md-switch{
+        margin: 0px !important;
+    }
+    #search-unpaid-list,#search-paid-list{
+        margin: 0px;
+        padding: 0px;
+        padding-left: 5px;
+        min-height: 0px;
+    }
+</style>
+
+
+<div class="card" id="admin-payment-status">
+    <div class="card-header">
+        <div class="d-flex">
+            <div class="col-1">Status</div>
+            <div class="col-2">
+                <md-switch ng-model="displayPaymentStatus" aria-label="Switch 1" ng-true-value="'Paid'" ng-false-value="'Unpaid'" class="md-warn">
+                    {{ displayPaymentStatus }}
+                </md-switch>
+            </div>
+            <div class="col">
+
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+       <div class="d-flex">
+           <div class="col-12" style="background-color: lightgrey" ng-show="displayPaymentStatus=='Unpaid'">
+               <table id="coures-table" st-table="display_entrants"  st-safe-src="participantsPaymentStatusList" class="table table-striped">
+<!--               <table class="table" id="unpaidStatusTable">-->
+                   <thead>
+                            <tr>
+                               <th colspan="3">
+                                   <input id="search-unpaid-list" st-search placeholder="Search" class="input-sm form-control" type="search"/>
+                               </th>
+                           </tr>
+                        <tr>
+                            <th colspan="1" st-ratio="2" st-skip-natural="true">SL</th>
+                            <th colspan="1" st-ratio="5" st-skip-natural="true">ID</th>
+                            <th colspan="1" st-ratio="15" st-skip-natural="true" st-sort="participant_name">Name</th>
+                            <th colspan="1" st-ratio="10" st-skip-natural="true" st-sort="club_name">Club</th>
+                            <th colspan="1" st-ratio="10" st-skip-natural="true">Amount</th>
+                            <th colspan="1" st-ratio="10" st-skip-natural="true">Status</th>
+                        </tr>
+                   </thead>
+                   <tbody>
+                   <tr ng-repeat="item in display_entrants | filter : {'is_valid_entrant' : 0}">
+                       <td class="pl-2 text-left">{{$index+1}}</td>
+                       <td class="pl-2 text-left">{{createParticipantCode("LPS",item.id)}}</td>
+                       <td class="pl-2 text-left">{{item.participant_name}}</td>
+                       <td class="pl-2 text-left">{{item.club_name}}</td>
+                       <td nowrap class="pl-2 text-left">
+                           <a href="#" editable-text="item.amount_received" onbeforesave="updateAmount(item,$data);">
+                               {{ item.amount_received || 'NIL'}}
+                           </a>
+                       </td>
+                       <td class="pl-2 text-left">{{item.is_valid_entrant==1?"paid":"pending"}}</td>
+
+                   </tr>
+                   </tbody>
+               </table>
+           </div>
+           <div class="col-12" style="background-color: white" ng-show="displayPaymentStatus=='Paid'">
+               <table id="paidStatusTable" st-table="display_paidEntrants"  st-safe-src="participantsPaymentStatusList" class="table table-striped">
+                   <thead>
+                   <tr>
+                       <th colspan="3">
+                           <input id="search-paid-list" st-search placeholder="Search" class="input-sm form-control" type="search"/>
+                       </th>
+                   </tr>
+                   <tr>
+                       <th colspan="1" st-ratio="2" st-skip-natural="true">SL</th>
+                       <th colspan="1" st-ratio="5" st-skip-natural="true">ID</th>
+                       <th colspan="1" st-ratio="15" st-skip-natural="true" st-sort="participant_name">Name</th>
+                       <th colspan="1" st-ratio="10" st-skip-natural="true" st-sort="club_name">Club</th>
+                       <th colspan="1" st-ratio="10" st-skip-natural="true" st-sort="amount_received">Amount</th>
+                       <th colspan="1" st-ratio="10" st-skip-natural="true">Status</th>
+                       <th colspan="1" st-ratio="10" >Delete</th>
+                   </tr>
+                   </thead>
+                   <tbody>
+                   <tr ng-repeat="item in display_paidEntrants | filter : {'is_valid_entrant' : 1}">
+                       <td class="pl-2 text-left">{{$index+1}}</td>
+                       <td class="pl-2 text-left">{{createParticipantCode("LPS",item.id)}}</td>
+                       <td class="pl-2 text-left">{{item.participant_name}}</td>
+                       <td class="pl-2 text-left">{{item.club_name}}</td>
+                       <td nowrap class="pl-2 text-left">
+                           <a href="#" editable-text="item.amount_received" onbeforesave="updateAmount(item,$data);">
+                               {{ item.amount_received}}
+                           </a>
+                       </td>
+                       <td class="pl-2 text-left">{{item.is_valid_entrant==1?"paid":"pending"}}</td>
+                       <td class="pl-2 text-left">
+                           <a href="#" ng-click="setToUnpaid(item)"><i class="material-icons">Make Unpaid</i></a>
+                       </td>
+                   </tr>
+                   </tbody>
+               </table>
+           </div>
+       </div>
+    </div>
+</div>

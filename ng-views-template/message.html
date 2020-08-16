@@ -1,0 +1,54 @@
+<div class="d-flex col-12">
+    <div class="col-12">
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs nav-justified" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" ng-style="tab==1 && selectedTab" href="#" role="tab" ng-click="setTab(1)">Add new messge</a>
+            </li>
+
+        </ul>
+        <!-- Tab panels -->
+        <div class="tab-content">
+            <!--Panel 1-->
+            <div ng-show="isSet(1)">
+                <div id="row my-tab-1" class="bg-cpanel">
+                        <form name="msgForm" class="form-horizontal">                           
+                       
+                        <div class="d-flex justify-content-center mt-1 pt-2">
+                            <label  class="col-2">Message</label>
+                            <div class="col-3">
+                            <textarea  class="form-control" required ng-model="message" maxlength="100"></textarea>
+                                <!-- <input class="form-control" required ng-model="message" maxlength="50"> -->
+                            </div>
+                        </div>
+
+                      
+
+                        <div class="d-flex justify-content-center mt-3">
+                            <div class="col-3">
+                                
+                            </div>
+                            <div class="col-3">
+                                <input class="btn-secondary" type="button" value="Submit" ng-click="submitNewMessage(message)" ng-disabled="msgForm.$invalid">
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-center mt-2">
+                            <div class="">
+                                <span ng-show="submitStatus" class="text-success h5">Msg added</span>
+                            </div>
+                        </div>
+
+                    </form>
+                </div> <!--//End of my tab1//-->
+                <div class="d-flex" ng-show="false">
+                    <div class="col"><pre>resultData={{resultData | json}}</pre></div>
+                    <!--                            <div class="col"><pre>terminalList={{terminalList | json}}</pre></div>-->
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+</div>

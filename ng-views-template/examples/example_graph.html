@@ -1,0 +1,38 @@
+<div class="card">
+    <div class="card-header">
+        CHART
+    </div>
+    <div class="card-body">
+        <div class="d-flex">
+            <div class="col">
+                <canvas id="line" class="chart chart-line" chart-data="data"
+                        chart-labels="labels" chart-series="series" chart-options="options"
+                        chart-dataset-override="datasetOverride" chart-click="onClick">
+                </canvas>
+            </div>
+            <div class="col">
+                <canvas id="bar" class="chart chart-bar"
+                        chart-data="data" chart-labels="labels"> chart-series="series"
+                </canvas>
+            </div>
+            <div class="col">
+                <canvas id="pie" class="chart chart-pie"
+                        chart-data="dataPie" chart-labels="labelsPie" chart-options="options">
+                </canvas>
+            </div>
+        </div>
+
+
+
+        <div layout="row" layout-xs="column">
+            <div flex="">
+                I'm above on mobile, and to the left on larger devices.
+            </div>
+            <div flex="">
+                I'm below on mobile, and to the right on larger devices.
+            </div>
+        </div>
+
+
+    </div>
+</div>

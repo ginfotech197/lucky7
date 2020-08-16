@@ -1,0 +1,213 @@
+<style>
+
+
+/*    .dropzone .msg{*/
+/*        font-size: 20px;*/
+/*        font-weight: bold;*/
+/*        color: #c3c3c3;*/
+/*        padding: 0 10px;*/
+/*    }*/
+/*    input.fileUpload{*/
+/*        display: none;*/
+/*    }*/
+
+/*    .previewData img{*/
+/*        width: 100px;*/
+/*        height: 100px;*/
+/*        float: left;*/
+/*        margin: 5px;*/
+/*    }*/
+
+/*    .circle.remove:hover i.fa-close{*/
+/*        color: red;*/
+/*    }*/
+/*    .circle i{*/
+/*        position: relative;*/
+/*        font-size: 14px;*/
+/*    }*/
+/*    .circle i.fa-check{*/
+/*        top: 3px;*/
+/*        left: 5px;*/
+/*    }*/
+/*    .circle i.fa-close{*/
+/*        top: 2px;*/
+/*        left: 7px;*/
+/*    }*/
+
+
+
+    /*#file-upload-div {*/
+    /*    background-color: #6c757d;*/
+    /*    overflow: scroll !important;*/
+    /*}*/
+    #file-upload-div{
+        overflow: scroll;
+    }
+</style>
+<div id="file-upload-div">
+<b>Post JSON data and files in Same Request with AngularJS and Web API example</b>
+
+
+
+<h1>Upload File with AngularJS</h1>
+<h2>Content-Type: multipart/form-data</h2>
+<input type=file id="image-11" my-files="filesx" /><br>
+<code>
+    Name: {{filesx[0].name}}<br>
+    Size: {{filesx[0].size}}<br>
+    Type: {{filesx[0].type}}<br>
+    Date: {{filesx[0].height}}<br>
+</code>
+<button ng-click="add('image-11')" >Add</button>
+<br>
+<h2>Content-Type: multipart/form-data</h2>
+<input type=file id="image-10" fileinput="" filepreview="filepreview_1_13" my-files="filesy" /><br>
+<code>
+    Name: {{filesy[0].name}}<br>
+    Size: {{filesy[0].size}}<br>
+    Type: {{filesy[0].type}}<br>
+</code>
+<button ng-click="add('image-10')" >Add</button>
+<img ng-src="{{filepreview_1_13}}" />
+
+
+
+<button ng-click="upload()">Upload</button><br>
+<div ng-show="result">{{result}}</div>
+<br>
+
+<br>
+<input type="file" name="file" onchange="angular.element(this).scope().uploadFileSecond(this.files)"/>
+
+<br>
+<input type="file" ng-file-select="onFileSelect($files)" ng-model="imageSrc">
+<button ng-click="uploadFileSecond(imageSrc)">Upload2</button><br>
+
+
+<br>
+<input type="file" id="image-1" name="file2" fileinput="" filepreview="filepreview_1_3"/>
+<button ng-click="add('image-1')" >Add</button>
+<img ng-src="{{filepreview_1_3}}" />
+
+
+test
+<input type="file" id="image-2" name="file2" fileinput="" filepreview="filepreview_2_2"/>
+<button ng-click="add('image-2')" >Add</button>
+<img ng-src="{{filepreview_2_2}}" />
+
+<!--<br>-->
+<!--<input type="file" id="image-2" name="file2" ng-file-select="onFileSelect($files)" ng-model="imageSrc2" />-->
+<!--<button ng-click="add('image-2')">Add</button>-->
+<!--<img ng-src="{{imageSrc}}" />-->
+
+
+<!--<div class="border">-->
+<!--    <input type="file" fileinput="" filepreview="filepreview_1_3" ng-model="myFile" id="upload-bar" class="btn-primary" onchange="angular.element(this).scope().uploadedFile(this)">-->
+
+<!--</div>-->
+<!--<img ng-src="{{filepreview_1_3}}" class="img-fluid w-100"/>-->
+
+<br>
+<hr>
+<pre>
+
+    {{dummy | json}}
+</pre>
+
+Pick an image-file: <input type="file" id="test1" ng-model="dummy.images" accept="image/*" multiple app-filereader /><br />
+<button ng-click="add('test1')" >Add</button>
+<img ng-repeat="image in dummy.images" ng-src="{{image}}" width="300" /><br />
+
+<br>
+<hr>
+<input type="file" select-ng-files ng-model="fileArray">
+
+<code><table ng-show="fileArray.length">
+    <tr><td>Name</td><td>Date</td><td>Size</td><td>Type</td><tr>
+    <tr ng-repeat="file in fileArray">
+        <td>{{file.name}}</td>
+        <td>{{file.lastModified | date  : 'MMMdd,yyyy'}}</td>
+        <td>{{file.size}}</td>
+        <td>{{file.type}}</td>
+    </tr>
+</table></code>
+<pre>
+    {{fileArray | json}}
+</pre>
+
+
+
+
+
+<hr>
+<br>
+
+
+File5
+<input type="file" id="file5"  class="file-select" fileinput="" filepreview="filepreview_1_113" />
+<button ng-click="add('file5')" >Add</button>
+<img ng-src="{{abc}}" />
+<br/>
+myimage {{currentWidth}}
+<input type="file" id="file6" class="file-select"  filepreview="filepreview_1_114" accept="image/jpeg"/>
+<button ng-click="add('file6')" >Add</button>
+<img ng-src="{{abc.src}}" />
+<br/>
+<br/>
+<br/>
+<br/>
+<h2>Image upload</h2>
+<div>
+    <div img-upload method="POST" url="http://127.0.0.1/institution/public/api/test/pics"></div>
+</div>
+
+
+
+
+
+Load File
+<form name="myForm">
+
+    <label>Latest File upload</label>
+    <input type="file" id="file7" name="myImage" image-with-preview
+           ng-model="image1"
+           accept="image/jpeg,image/png"
+           dimensions="height < 22400 && width < 21800"
+           size="size < 1000000">
+    <span class="error" ng-show="myForm.myImage.$error.image">
+    Not a JPEG or a PNG!
+  </span>
+    <span class="error" ng-show="myForm.myImage.$error.dimensions">
+    Invalid dimensions! Expecting a landscape image smaller than 1800x400.
+    </span>
+    <span class="error" ng-show="myForm.myImage.$error.size">
+    Invalid size.
+    </span>
+    <button ng-show="image1.src" ng-click="add('file7')" >Add2</button>
+<!--    <img ng-show="image.src" ng-src="{{image.src}}"/>-->
+    <img ng-show="image1.src" ng-src="{{image1.src}}"/>
+</form>
+</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+
+
+
+
+

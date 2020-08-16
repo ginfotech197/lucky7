@@ -1,0 +1,52 @@
+<div class="d-flex col-12">
+    <div class="col-12">
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs nav-justified indigo" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" ng-style="tab==1 && selectedTab" href="#" role="tab" ng-click="setTab(1)">Set Payout</a>
+            </li>
+        </ul>
+        <!-- Tab panels -->
+        <div class="tab-content">
+            <!--Panel 1-->
+            <div>
+                <div class="row">
+                    <div class="col-12">
+            
+                        <form>
+                            <div class="form-row">
+                                <div class="col-3">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon1">Time</span>
+                                        </div>
+                                        <select required
+                                                class=""
+                                                data-ng-model="manualResultTime"
+                                                data-ng-options="x as (x.end_time + ' ' + x.meridiem) for x in digitDrawTime" data-ng-change="getTotalSaleDataByDraw(manualResultTime)">
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col" ng-repeat="x in seriesList">					
+                                    <label> <b>{{x.series_name}}</b>
+                                        <input type="radio" ng-model="$parent.manualResultObj" ng-value="x">
+                                    </label>
+                                </div>
+            
+                            </div>
+                            <div class="form-row mt-5">
+                                <div class="col-3"></div>
+                                <div class="col-3">
+                                    <button type="submit" ng-click="submitManualResult(manualResultObj,manualResultTime)" class="btn btn-primary btn-lg" style="padding:.4rem 1rem;font-size:1.25rem">Submit</button>
+                                </div>
+                                
+                            </div>
+                        </form>		
+            
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

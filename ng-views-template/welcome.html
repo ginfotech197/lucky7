@@ -1,0 +1,275 @@
+<style type="text/css">
+  .game-div{
+    background-color: #ec6211;
+  }
+
+  .result-div{
+    background-image:url(img/ludo-board.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  .input-box{
+    width: 100px;
+    height: 70px;
+    margin: 25px 25px 25px 65px;
+    font-size: xx-large;
+    margin-top: auto;
+  }
+  .total-value{
+    width: 120px;
+    height: 60px;
+    margin: 25px 25px 25px 65px;
+    font-size: xx-large;
+    margin-top: auto;
+  }
+  .result-name{
+    font-size: xxx-large;
+    color: white;
+  }
+  .marquee-style{
+    color: darkmagenta;
+    font-size: xxx-large;
+  }
+  .result-font { 
+      font-size: 2.0rem; 
+      font-weight: bold;
+  } 
+
+  .inputbox-control {
+    display: block;
+    width: 100%;
+    padding: .375rem .75rem;
+    font-size: 4rem;
+    line-height: 2.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  }
+  
+ 
+</style>
+
+<div class="container-fluid border border-secondary" data-ng-controller='PlayController'>
+  <div class="row marquee-style">
+    <marquee Scrollamount=10 bgcolor="aqua">{{scrollingMsg.message}}<img src="img/rolling-dice-gif.gif" width="80px" height="80px"></marquee>
+  </div>
+
+    <div class="row" style=" background-color:#FF6347">
+      <div class="col-2"><img src="img/lucky-seven.png" width="200px" height="150px"></div>
+      <div class="col-5">
+          <form class="form-inline mt-2" ng-show="!loginDetails.isLoggedIn">
+              <div class="form-group  mx-sm-3">
+                <input type="text" ng-model="loginData.userId" style="width:200px;height:40px;font-size:x-large" placeholder="User Id">
+              </div>
+              <div class="form-group mx-sm-3">
+                <input type="password" ng-model="loginData.password" style="width:200px;height:40px;font-size:x-large" placeholder="Password">
+              </div>
+              <button type="submit" ng-click="validateUser()" class="btn-primary mb-2">Login</button>
+          </form>
+          <div class="form-group mt-5" style="font-size: large;" ng-show="loginDetails.isLoggedIn">
+              <span class="text-left pl-5" >Terminal id: <b>{{users.userLoginid}}</b>
+              <span class="text-left">Agent:<b>{{users.person_name}} </b></span>
+              <span class="text-left">Balance:  <b>{{users.userId? loggedInTerminalBalance.current_balance : ''}} </b></span>
+              <span class="text-right" ng-show="reportArray.barcode">Player:  <b>{{reportArray.barcode? reportArray.barcode : ''}} </b></span>
+          </div>
+      </div>
+      <div class="col-3" data-ng-init="showTerminalReport=false">
+        <button type="submit" ng-show="loginDetails.isLoggedIn" class="btn-primary mb-2" ng-click="logoutUserWithConfirmation()">Logout</button> 
+        <button type="submit" ng-show="showResultDiv || showTerminalReport" class="pull-right btn-info mt-2" ng-click="showResultDiv=false;showTerminalReport=false">Home</button>
+        <button type="submit" class="pull-right btn-info mt-2" ng-show="!showResultDiv" ng-click="showResultDiv=true;showTerminalReport=false;getResultListByDate(todayDate)">Result</button>
+            
+        <button type="submit" ng-show="users.person_category_id>0 &&  !showTerminalReport" class="pull-right btn-warning"  ng-click="showTerminalReport=true;showResultDiv=false">Report</button>
+      </div>
+      <div class="col-2 text-right">
+        <img src="img/logo.png" width="130px" height="120px">
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-2 {{resultBgColor[$index]}} text-center" data-ng-repeat="res in resultBgColor track by $index">
+        <span class="result-font">{{(resultsInTop[$index].end_time)?(resultsInTop[$index].end_time | limitTo:5) : '_:_'}}</span><br>
+        <span class="result-font">{{resultsInTop[$index].game_initial || '______'}}</span><br>
+        <span class="">
+          <img ng-if="resultsInTop[$index].dice1" ng-src="img/result/dice{{resultsInTop[$index].dice1}}-res.png" alt="" width="50px" height="50px">
+          <img ng-if="resultsInTop[$index].dice1" ng-src="img/result/dice{{resultsInTop[$index].dice2}}-res.png" alt="" width="50px" height="50px">
+
+          <img ng-if="!resultsInTop[$index].dice1" ng-src="img/result/dice-question-mark.png" alt="" width="50px" height="50px">
+          <img ng-if="!resultsInTop[$index].dice1" ng-src="img/result/dice-question-mark.png" alt="" width="50px" height="50px">
+        </span>
+      </div>
+    </div>
+
+    <div class="game-div row-12" ng-show="!showResultDiv && !showTerminalReport">
+      <div class="row result-style">
+        <div class="col-3"></div>
+        <div class="col-2 border border-dark bg-light-green text-center">Game time {{drawTimeList.end_time}}</div>
+        <div class="col-2 border border-dark bg-light-pink-red text-center">Remaining time {{ leftHour + ':' + leftMinute + ':' + leftsecond}}</div>
+        <div class="col-2 border border-dark bg-yellow text-center">Current time {{hour +':'+ minute + ':'+ second}}</div>
+        <div class="col-3"></div>
+      </div>
+
+      <div class="row result-style">
+        <div class="col-2"></div>
+        <div class="col-8 border border-dark bg-light-green text-center">
+            <form name="gameForm">
+                <div class="form-row">
+                  <div class="col">
+                    <label for="inputPassword4" class="font-weight-bold">{{allSeriesList[0].series_name || '-'}}</label>
+                    <input numbers-only hide-zero type="text" ng-model="seriesOne" class="inputbox-control" maxlength="5">
+                  </div>
+                  <div class="col">
+                    <label for="inputPassword4" class="font-weight-bold">{{allSeriesList[1].series_name || '-'}}</label>
+                    <input numbers-only hide-zero type="text" ng-model="seriesTwo" class="inputbox-control" maxlength="5">
+                  </div>
+                  <div class="col">
+                    <label for="inputPassword4" class="font-weight-bold">{{allSeriesList[2].series_name || '-'}}</label>
+                    <input numbers-only hide-zero type="text" ng-model="seriesThree" class="inputbox-control" maxlength="5">
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="col">
+                    <span>Total</span>
+                  </div>
+                  <div class="col">
+                    <input type="text" ng-disabled="true" ng-model="sumOfBox" class="form-control text-center" placeholder="Total" style="font-size:2rem;line-height:2.5">
+                  </div>
+                  <div class="col">
+                    <button type="submit" ng-click="submitGameValues(seriesOne,seriesTwo,seriesThree)" class="btn btn-primary btn-lg" ng-disabled="disableSubmitButton" style="padding:.9rem 1rem;font-size:2.25rem">BUY</button>
+                  </div>
+                  <div class="col">
+                    <button type="submit" ng-click="clearInputBox()" class="btn btn-primary btn-lg" style="padding:.9rem 1rem;font-size:2.25rem">CLEAR</button>
+                  </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-2"></div>
+      </div>
+
+      <div class="dice">
+        <ol class="die-list even-roll" data-roll="1" id="die-1">
+          <li class="die-item" data-side="1">
+            <span class="dot"></span>
+          </li>
+          <li class="die-item" data-side="2">
+            <span class="dot"></span>
+            <span class="dot"></span>
+          </li>
+          <li class="die-item" data-side="3">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+          </li>
+          <li class="die-item" data-side="4">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+          </li>
+          <li class="die-item" data-side="5">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+          </li>
+          <li class="die-item" data-side="6">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+          </li>
+        </ol>
+        <ol class="die-list odd-roll" data-roll="1" id="die-2">
+          <li class="die-item" data-side="1">
+            <span class="dot"></span>
+          </li>
+          <li class="die-item" data-side="2">
+            <span class="dot"></span>
+            <span class="dot"></span>
+          </li>
+          <li class="die-item" data-side="3">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+          </li>
+          <li class="die-item" data-side="4">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+          </li>
+          <li class="die-item" data-side="5">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+          </li>
+          <li class="die-item" data-side="6">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+          </li>
+        </ol>
+      </div>
+
+    </div>
+
+
+
+    <!--Result page-->
+      <div class="row col-xs-12 col-md-12 col-sm-12 col-lg-12" ng-show="showResultDiv">
+                                      
+        <div class="row col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                <div class="col-lg-3 col-md-3 col-xs-3 col-sm-3 p-3">
+                    <input type="date" class="form-control" ng-model="result_date">
+                </div>
+                <div class="col-lg-3 col-md-3 col-xs-3 col-sm-3">
+                  <a href="#" class="btn btn-danger mt-2 mb-1" ng-click="getResultListByDate(result_date)" role="button" style="font-size:2.25rem;font-weight:bold">Show</a>
+              </div>
+        </div>
+
+    
+
+        <div class="d-flex flex-row border border-secondary ml-5" ng-repeat="r in getRow(row) track by $index" ng-init="rowIndex = $index">
+            <div class="text-center" ng-repeat="c in getCol(coloumn) track by $index" ng-init="rowIndex==0 ?x=rowIndex+$index : x=rowIndex*coloumn+$index">
+                <!--x{{x}}={{rowIndex+'*'+6+'+'+$index}}={{(rowIndex*6+$index)}}-->
+              <h5>{{resultBydate[x].end_time | limitTo:5}}</h5>
+              <p class="p-5" ng-if="resultBydate[x].end_time">
+                <span style="font-size: 50px;">{{(resultBydate[x].game_initial)? (resultBydate[x].game_initial):'?'}}</span>
+                <img ng-show="resultBydate[x].dice1" ng-src="img/result/dice{{resultBydate[x].dice1}}-res.png" alt="" width="70px" height="70px">
+                <img ng-show="resultBydate[x].dice2" ng-src="img/result/dice{{resultBydate[x].dice2}}-res.png" alt="" width="70px" height="70px">
+
+                <img ng-show="!resultBydate[x].dice1" ng-src="img/result/dice-question-mark.png" alt="" width="70px" height="70px">
+                <img ng-show="!resultBydate[x].dice2" ng-src="img/result/dice-question-mark.png" alt="" width="70px" height="70px">
+              </p>  
+            </div>
+        </div>
+
+
+      </div>
+
+
+      <div ng-include="'ng-views-template/report_terminal.html'" data-ng-show="showTerminalReport"></div>
+
+      <div class="footerContent"><h1>Customer care - 7471173059, 9407295872</h1>
+       It's a amusement Game. So  use of  this website as lottery or any other illegal means is strictly prohibited.
+        Viewing this website is on your own risk. All the information shown here is sponsored and we warn you that Amusement  Numbers are only for fun.
+        We are not responsible for any issues or scam. We respect all country, state rules/laws. If you not agree with our site disclaimer. Please quit our site right now.
+        @Copyright2019 All rights reserved to Lucky7 software development company
+      </div>
+       
+
+        <audio id="dice-audio" style="display: none;" pk-audio="sounds.sound" controls="" src="audio/wuerfelbecher.wav"></audio>
+        <!-- <audio id="dice-audio" style="display: none;" controls="" src="audio/wuerfelbecher.wav"></audio> -->
+  </div>
+

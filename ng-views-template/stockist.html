@@ -1,0 +1,121 @@
+<style type="text/css">
+            #search-results {
+                max-height: 200px;
+                border: 1px solid #dedede;
+                border-radius: 3px;
+                box-sizing: border-box;
+                overflow-y: auto;
+            }
+        </style>
+        <div class="d-flex col-12">
+            <div class="col-12">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs nav-justified" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" ng-style="tab==1 && selectedTab" href="#" role="tab" ng-click="setTab(1)">Create stockist</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" ng-style="tab==2 && selectedTab" href="#" role="tab" ng-click="setTab(2)">Stockist list</a>
+                    </li>
+                </ul>
+                <!-- Tab panels -->
+                <div class="tab-content">
+                    <!--Panel 1-->
+                    <div ng-show="isSet(1)">
+                        <div id="row my-tab-1">
+                            <form name="stockistForm" class="form-horizontal">
+                                <div class="d-flex justify-content-center ">
+                                    <div class="col">
+                                        <div class="d-flex mt-1">
+                                            <label  class="col-3">Stockist Name<span class="text-danger"></span></label>
+                                            <div class="col-3">
+                                                <input type="text" class="form-control" ng-model="stockist.stockist_name" required/>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex  mt-1">
+                                            <label  class="col-3">Login Id<span class="text-danger"></span></label>
+                                            <div class="col-3">
+                                                <input type="text" class="form-control" ng-model="stockist.user_id"  readonly/>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex mt-1">
+                                            <label  class="col-3">Password<span class="text-danger"></span></label>
+                                            <div class="col-3">
+                                                <input type="text" class="form-control" ng-model="stockist.user_password" required/>
+                                            </div>
+                                            <div class="col-3">
+                                                <input type="button" class="btn btn-success"  ng-click="randomPass(8,true,true,true)" value="Generate password" />
+                                            </div>
+                                        </div>
+                                        <div class="d-flex mt-1">
+                                            <label  class="col-3">Commission</label>
+                                            <div class="col-3">
+                                                <input type="text" disallow-spaces class="form-control" ng-model="stockist.commission"/>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-center mt-2">
+                                            <div class="col-4">
+                                                <input type="button" class="btn btn-secondary"  ng-click="saveStockistData(stockist)" ng-disabled="stockistForm.$invalid" value="Save" ng-show="!isUpdateable"/>
+                                                <input type="button" class="btn btn-secondary"  ng-click="resetStockistDetails()" value="Reset"/>
+                                                <input type="button" class="btn btn-secondary ml-2"  ng-click="updateStockistByStockistId(stockist,stockist.id)" value="Update" ng-show="isUpdateable" ng-disabled="stockistForm.$pristine"/>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-center mt-2">
+                                            <div class="">
+                                                <span ng-show="submitStatus" class="text-success">Record successfully added</span>
+                                                <span ng-show="updateStatus" class="text-success">Update successful</span>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="d-flex mt-1" ng-show="false">
+                                            <div class="col-3">
+                                                <pre>stockist={{stockist | json}}</pre>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div> <!--//End of my tab1//-->
+                    </div>
+
+                    <div ng-show="isSet(2)">
+                        <div id="my-tab-2">
+                            <style type="text/css">
+                               
+                                #stockist-table-div table th{
+                                    background-color: #1b6d85;
+                                    color: #a6e1ec;
+                                    cursor: pointer;
+                                }
+                                a[ng-click]{
+                                    cursor: pointer;
+                                }
+
+                            </style>
+                            <p><input type="text" ng-model="searchItem"><span class="glyphicon glyphicon-search"></span> Search </p>
+                            <div id="stockist-table-div" class="d-flex">
+                                <table cellpadding="0" cellspacing="0" class="table table-bordered">
+                                    <tr>
+                                        <th>SL></th>
+                                        <th ng-click="changeSorting('stockist_name')">Name</th>
+                                        <th >Login Id<i class="glyphicon"></th>
+                                        <th>Password</th>
+                                        <th >Commission</th>
+                                        <th>Edit</th>
+                                    </tr>
+                                    <tbody ng-repeat="s in stockistList | filter : searchItem  | orderBy:sort.active:sort.descending">
+                                    <tr ng-class-even="'banana'" ng-class-odd="'bee'">
+                                        <td>{{ $index+1}}</td>
+                                        <td>{{s.stockist_name}}</td>
+                                        <td>{{s.user_id}}</td>
+                                        <td>{{s.user_password}}</td>
+                                        <td>{{s.commission}}</td>
+                                        <td ng-click="updateStockistFromTable(s)"><a href="#">Edit</a></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>

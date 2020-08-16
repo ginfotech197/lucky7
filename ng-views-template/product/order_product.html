@@ -1,0 +1,278 @@
+<style>
+    #register-product{
+        /*background-color: #020532;*/
+        padding-top: 75px;
+        background-color: lightgrey;
+        min-height: 100vh;
+    }
+    #register-product label,#register-product input,#register-product md-select,#register-product md-option{
+        color: black !important;
+        font-size: 2vh !important;
+    }
+    #register-product input{
+        background-color: transparent;
+    }
+    #register-product .md-char-counter{
+        /*color: white;*/
+        font-size: 1vh;
+    }
+    #register-product .ng-pristine{
+        /*color: white;*/
+        font-size: 1vh;
+    }
+    input::placeholder {
+        color: #3c3c3c !important;
+        font-size: 1vh;
+        font-style: italic;
+    }
+    md-select::aria-label {
+        color: #0b2e13 !important;
+        font-size: 1vh;
+        font-style: italic;
+    }
+    img {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 30vh;
+        margin-bottom: 30vh;
+        height: 20vh;
+     }
+    md-autocomplete.md-default-theme, md-autocomplete {
+        background: rgba(247, 241, 241, 0);
+    }
+
+    textarea {
+        font-family: inherit;
+        font-size: inherit;
+    }
+
+    .fade-out.ng-hide {
+        opacity: 0;
+    }
+
+    .fade-out.ng-hide-add, .fade-out.ng-hide-remove {
+        transition: all linear 0.9s;
+    }
+
+    .check-element {
+        /*border: 1px solid black;*/
+        color: white;
+        background-color: #1d2124;
+        opacity: 1;
+        padding: 10px;
+    }
+
+
+
+</style>
+
+<div ng-show="!isEssentialDataFetched()" style="height: 100vh;">
+      <img src="assets/gifs/loading11.gif">
+</div>
+
+<!--This is our main woking section-->
+<div ng-show="isEssentialDataFetched()" class="card" id="register-product">
+    <div class="card-header">
+        <div class="row">
+            <div class="col">
+                <span class="pull-right">Order Entry</span>
+            </div>
+            <div class="col">
+                <span ng-hide="markFadeOut"  class="check-element fade-out">{{generalMessage}}</span>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="card-body">
+        <div class="d-flex">
+            <div class="col">
+                <form name="orderMasterForm" role="form" ng-submit="$event.preventDefault();">
+                    <!--Customer-->
+                    <div layout="row" class="m-0">
+                        <md-input-container class="col-4" >
+                            <label class="mt-0">Customer</label>
+                            <md-select required name="customer" ng-model="orderMaster.customer_id" placeholder="Enter Customer" ng-change="checkModelNumber(orderMaster.customer_id,orderDetails.model.model_number)" >
+                                <md-option><em>None</em></md-option>
+                                <md-option ng-repeat="customer in customers" ng-value="customer.id" >
+                                    {{customer.person_name}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                        <div class="col-8">
+                            <div class="form-group" ng-if="orderMaster.customer">
+                                <label for="exampleFormControlTextarea2"><a href="#" ng-click="showCustomerAddress();">Show Address</a></label>
+                                <textarea ng-if="isCustomerAddressVisible" ng-model="orderMaster.customer.address" class="form-control rounded-4"  rows="3"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div layout="row" class="m-0 mb-2">
+                        <md-input-container class="col-4" >
+                            <label class="mt-0">Agent</label>
+                            <md-select required name="agent" ng-model="orderMaster.agent_id" placeholder="Enter Agent" >
+                                <md-option><em>None</em></md-option>
+                                <md-option ng-repeat="agent in agents" ng-value="agent.id" >
+                                    {{agent.person_name}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                    </div>
+
+                    <md-input-container class="mr-2">
+                        <label>Date of Order</label>
+                        <datepicker date-format="dd/MM/yyyy"  date-max-limit="2025/01/01"  date-set="{{defaultOrderDate}}" date-typer="true" button-prev="<i class='fa fa-arrow-left'></i>" button-next="<i class='fa fa-arrow-right'></i>">
+                            <input name="dob" ng-model="orderMaster.orderDate" type="text" ng-change=""  md-maxlength="10" minlength="10" required/>
+                            <div ng-messages="registrationForm.dob.$error" ng-show="registrationForm.dob.$dirty">
+                                <div ng-message="required">This is required!</div>
+                                <div ng-message="md-maxlength">That's too long!</div>
+                                <div ng-message="minlength">That's too short!</div>
+                            </div>
+                        </datepicker>
+                    </md-input-container>
+
+
+                    <md-input-container class="col-3">
+                        <label>Date of Delivery</label>
+                        <datepicker date-format="dd/MM/yyyy"  date-max-limit="2025/01/01"  date-set="{{defaultDeliveryDate}}" date-typer="true" button-prev="<i class='fa fa-arrow-left'></i>" button-next="<i class='fa fa-arrow-right'></i>">
+                            <input name="dob" ng-model="orderMaster.deliveryDate" type="text" ng-change=""  md-maxlength="10" minlength="10" required/>
+                            <div ng-messages="registrationForm.dob.$error" ng-show="registrationForm.dob.$dirty">
+                                <div ng-message="required">This is required!</div>
+                                <div ng-message="md-maxlength">That's too long!</div>
+                                <div ng-message="minlength">That's too short!</div>
+                            </div>
+                        </datepicker>
+                    </md-input-container>
+                </form>
+
+                <form name="orderDetailsForm" role="form" ng-submit="$event.preventDefault();">
+                    <div layout="col" class="mb-3">
+                        <md-input-container class="col-4" >
+                            <label>Model Number</label>
+                            <md-autocomplete md-no-cache="true"
+                                             md-selected-item="orderDetails.model"
+                                             md-search-text="searchText"
+                                             md-search-text-change = "searchTextChange(searchText)"
+                                             md-items="item in selectedProductList"
+                                             md-item-text="item.model_number"
+                                             md-selected-item-change = "checkModelNumber(orderMaster.customer_id,orderDetails.model.model_number)">
+                                            <span>{{ item.model_number }}</span>
+                            </md-autocomplete>
+                        </md-input-container>
+                        <div class="col-8">
+                            <button type="button" class="m-0 active btn btn-info"  ng-if="orderDetails.price">{{orderDetails.priceCode}}</button>
+                            <button type="button" class="m-0 active btn btn-dark" ng-if="orderDetails.price">PLoss : {{orderDetails.pLoss | number:3}}</button>
+                            <button type="button" class="m-0 active btn btn-dark" ng-if="orderDetails.price">Price : {{orderDetails.price}}</button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div layout="row" class="m-0">
+                        <md-input-container class="col-3" >
+                            <label class="mt-0">Quantity</label>
+                            <input name="quantity" ng-model="orderDetails.quantity" ng-disabled="!orderDetails.model || !orderMaster.customer" ng-change="calculateAmount()" required>
+                        </md-input-container>
+
+                        <md-input-container class="col-3" >
+                            <label class="mt-0">Approx Gold</label>
+                            <input name="approxGold" ng-model="orderDetails.approxGold" required>
+                        </md-input-container>
+                        <div class="col-8">
+                            <button type="button" class="m-0 active btn btn-info" ng-if="orderDetails.amount">Amount : {{orderDetails.amount}}</button>
+                        </div>
+
+                    </div>
+                </form>
+                <md-button class="" ng-style="isActiveButton(!orderDetailsForm.$invalid)" ng-disabled="orderDetailsForm.$invalid" ng-click="addOrderToOrderDetails(orderDetails)">Add</md-button>
+                <md-button class=""  ng-click="clearLocalStorage()">Clear Local Storage</md-button>
+            </div>
+
+<!--            right div-->
+
+            <div class="col">
+
+                <table id="coures-table"  st-table="rowCollection" st-safe-src="allProductsList" class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th colspan="1">SL</th>
+                        <th  st-sort="" colspan="1">Model Number</th>
+                        <th colspan="1">Price</th>
+                        <th st-sort="" colspan="1">P Loss</th>
+                        <th colspan="1">Quantity</th>
+                        <th colspan="1" >Amount</th>
+                        <th colspan="1" >Approx Gold</th>
+                        <th colspan="1" >Action</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="item in allOrderList | filter:productSearch">
+                        <td class="">{{$index+1}}</td>
+                        <td class="align-left">{{item.model.model_number}}-{{item.priceCode}}</td>
+                        <td class="">{{item.price}}</td>
+                        <td class="">{{item.pLoss}}</td>
+                        <td class="">
+                            <a href="#" editable-text="item.quantity" onaftersave="updateApproxGold(item,$data)">{{ item.quantity || "empty" }}</a>
+                        </td>
+                        <td class="">{{item.amount}}</td>
+                        <td class="">
+                            <a href="#" editable-text="item.approxGold" >{{ item.approxGold || "empty" }}</a>
+                        </td>
+                        <td class="">
+                           <a href="#" ng-click="deleteOrderDetails($index)">
+                               <md-icon class=""  md-svg-icon="./bower_components/material-design-icons/action/svg/production/ic_delete_forever_24px.svg"></md-icon>
+                           </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!--following part for development area-->
+<div   class="col-2">
+    <md-switch ng-model="developerMode.isDeveloperDivShowable" aria-label="Switch 1" ng-true-value="true" ng-false-value="false" class="md-warn" ng-if="developerMode.isEnabled">
+        {{ developerMode.isDeveloperDivShowable }}
+    </md-switch>
+</div>
+
+<section   class="Developer Area" ng-if="developerMode.isDeveloperDivShowable">
+    <div class="card">
+        <div class="card-header">
+            This is developer area
+        </div>
+        <div class="card-body">
+            <div class="d-flex">
+                <div class="col">
+                    <pre>
+                        allOrderList={{allOrderList | json}};
+                        <hr>
+                        orderMaster={{orderMaster | json}};
+                        orderDetails={{orderDetails | json}};
+                    </pre>
+                    <hr>
+                    <pre>
+                        goldForProduction={{goldForProduction | json}}
+                    </pre>
+                </div>
+                <div class="col">
+                    <pre>customers={{customers | json}}</pre><hr>
+                    <pre>agents={{agents | json}}</pre>
+                </div>
+                <div class="col">
+<!--                    allProductCategoriesList={{allProductCategoriesList | json}}-->
+                      <pre> allPriceCodes={{allPriceCodes | json}}</pre>
+                      <pre> allProductsList={{allProductsList | json}}</pre>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

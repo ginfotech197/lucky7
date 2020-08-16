@@ -326,21 +326,21 @@ app.controller('MainController', function($cookies,$scope,$q,$mdDialog,$timeout,
             $scope.second = $scope.timeInArray[2];
             $interval(function () { 
                 $scope.currentTimeObj = {};
-                // if ($scope.hour == 23 && $scope.minute ==59 && $scope.second==59)   {
-                //     $scope.hour = 0;
-                //     $scope.minute = 0;
-                //     $scope.second = 0;
-                // }
-                // if($scope.second == 59){
-                //     $scope.minute++;
-                //     $scope.second = 0;
-                // }else{
-                //     $scope.second++;
-                // }
-                // if($scope.minute == 59){
-                //     $scope.hour++;
-                //     $scope.minute = 0;
-                // }
+                if ($scope.hour == 23 && $scope.minute ==59)   {
+                    $scope.hour = 0;
+                    $scope.minute = 0;
+                    $scope.second = 1;
+                }
+                if($scope.second == 59){
+                    $scope.minute++;
+                    $scope.second = 0;
+                }else{
+                    $scope.second++;
+                }
+                if($scope.minute == 59){
+                    $scope.hour++;
+                    $scope.minute = 0;
+                }
                 $scope.currentTimeObj.hour = $scope.hour;
                 $scope.currentTimeObj.minute = $scope.minute;
                 $scope.currentTimeObj.second = $scope.second;

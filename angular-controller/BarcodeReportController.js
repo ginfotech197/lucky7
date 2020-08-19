@@ -50,13 +50,13 @@ app.controller("BarcodeReportCtrl", function ($scope,$http,$filter,$rootScope,da
     $scope.alertMsg2=true;
     $scope.alertMsgCard=true;
 
-    $scope.$watch("barcodeWiseReport", function(newValue, oldValue){
+    // $scope.$watch("terminalDataWiseReport", function(newValue, oldValue){
 
-        if(newValue != oldValue){
-            var result=alasql('SELECT sum(amount) as total_amount,sum(prize_value) as total_prize_value  from ? ',[newValue]);
-            $scope.barcodeWiseReportFooter=result[0];
-        }
-    });
+    //     if(newValue != oldValue){
+    //         var result=alasql('SELECT sum(amount) as total_amount,sum(prize_value) as total_prize_value  from ? ',[newValue]);
+    //         $scope.terminalDataWiseReport=result[0];
+    //     }
+    // });
 
 
     $scope.gameList = [
@@ -93,34 +93,24 @@ app.controller("BarcodeReportCtrl", function ($scope,$http,$filter,$rootScope,da
 
             // get terminal report order by barcode
     $scope.showbarcodeReport=[];
-    $scope.getAllBarcodeDetailsByDate=function (start_date,select_terminal,select_draw_time) {
-        $scope.isLoading2=true;
+    $scope.terminalDataWiseReport=[];
+    $scope.getTerminalDateWiseReport=function (start_date,end_date) {
         var start_date=$scope.changeDateFormat(start_date);
-        $scope.x=select_draw_time;
+        var end_date=$scope.changeDateFormat(end_date);
         var request = $http({
             method: "post",
             dataType:JSON,
-            url: api_url+"/v1/getAllBarcodeReportByDate",
+            url: api_url+"/v1/terminalDateWiseReportFromCPanel",
             data: {
-                start_date: start_date
+                start_date: start_date,
+                end_date: end_date
             }
             ,headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
         }).then(function(response){
-            $scope.barcodeWiseReport=response.data; 
-            $scope.isLoading2=false;            
-            if(select_draw_time>0){
-                $scope.x=parseInt($scope.x);
-                $scope.barcodeWiseReport=alasql("SELECT *  from ? where draw_master_id=?",[$scope.barcodeWiseReport,$scope.x]);
-            }
-            if(select_terminal!=0){
-                $scope.barcodeWiseReport=alasql("SELECT *  from ? where user_id=?",[$scope.barcodeWiseReport,select_terminal]);
-            }
-            // checking for data
-            if($scope.barcodeWiseReport.length==0){
-                $scope.alertMsg2=true;
-            }else{
-                $scope.alertMsg2=false;
-            }
+            $scope.terminalDataWiseReport=response.data; 
+            // if(select_terminal!=0){
+            //     $scope.terminalDataWiseReport=alasql("SELECT *  from ? where terminal=?",[$scope.barcodeWiseReport,select_terminal]);
+            // }
 
         });
 
@@ -142,7 +132,7 @@ app.controller("BarcodeReportCtrl", function ($scope,$http,$filter,$rootScope,da
             $scope.particularsDetails.forEach(function (val, idx) {
                 $scope.particularsNote += val.series_name + ' ' + val.particulars;
             });  
-            $scope.barcodeWiseReport[target].particulars = $scope.particularsNote;            
+            $scope.terminalDataWiseReport[target].particulars = $scope.particularsNote;            
         });
     };
 
@@ -161,9 +151,9 @@ app.controller("BarcodeReportCtrl", function ($scope,$http,$filter,$rootScope,da
             ,headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
         }).then(function(response){
             $scope.claimReport=response.data;
-            var idx = $scope.barcodeWiseReport.findIndex( record => record.play_master_id === barcodeDetails.play_master_id);
-            $scope.barcodeWiseReport[idx].is_claimed = $scope.claimReport.is_claimed;
-            $scope.barcodeWiseReport[idx].claimed = 'yes';
+            var idx = $scope.terminalDataWiseReport.findIndex( record => record.play_master_id === barcodeDetails.play_master_id);
+            $scope.terminalDataWiseReport[idx].is_claimed = $scope.claimReport.is_claimed;
+            $scope.terminalDataWiseReport[idx].claimed = 'yes';
             if($scope.claimReport.success==1){
                 alert("Thanks for the  claim");
                 barcodeDetails.is_claimed=1;

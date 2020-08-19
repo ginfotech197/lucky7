@@ -83,23 +83,31 @@
                                                 <table cellpadding="0" cellspacing="0" class="table table-bordered table-hover report-table text-justify">
                                                     <thead>
                                                     <tr>
+                                                        <th class="p-0 text-center">SlNo</th>
                                                         <th class="p-0 text-center">Terminal ID</th>
                                                         <th class="p-0  text-center">Agent name</th>
-                                                        <th class="p-0  text-center">Date</th>
-                                                        <th class="p-0 text-center">Total sale</th>
-                                                        <th class="p-0 text-center">Prize</th>
+                                                        <th class="p-0  text-center">Stockist name</th>
+                                                        <th class="p-0  text-center">Quantity</th>
+                                                        <th class="p-0 text-center">Amount</th>
+                                                        <th class="p-0 text-center">Prize value</th>
+                                                        <th class="p-0 text-center">Total</th>
+                                                        <th class="p-0 text-center">Commission value</th>
+                                                        <th class="p-0 text-center">Net payable</th>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
 
                                                     <tr ng-repeat="x in saleReport">
-                                                        <td class="p-0">
-                                                            {{x.terminal}}
-                                                        </td>
+                                                        <td class="p-0">{{$index+1}}</td>
+                                                        <td class="p-0">{{x.terminal}}</td>
                                                         <td class="p-0 text-center"> {{x.agent_name}}</td>
-                                                        <td class="p-0 ">{{x.game_date}}</td>
-                                                        <td class="p-0  text-right">{{x.total_sale}}</td>
+                                                        <td class="p-0 ">{{x.stockist_name}}</td>
+                                                        <td class="p-0  text-right">{{x.quantity}}</td>
+                                                        <td class="p-0  text-right">{{x.amount}}</td>
                                                         <td class="p-0  text-right">{{x.prize}}</td>
+                                                        <td class="p-0  text-right">{{x.terminal_commission_on_sale}}</td>
+                                                        <td class="p-0  text-right">{{x.total}}</td>
+                                                        <td class="p-0  text-right">{{x.net_to_pay}}</td>
                                                     </tr>
 
 

@@ -49,6 +49,11 @@
     border-radius: .25rem;
     transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
   }
+
+  input[type="text"]::placeholder {                    
+      /* Firefox, Chrome, Opera */ 
+      text-align: center; 
+  } 
   
  
 </style>
@@ -118,15 +123,15 @@
             <form name="gameForm">
                 <div class="form-row">
                   <div class="col">
-                    <label for="inputPassword4" class="font-weight-bold">{{allSeriesList[0].series_name || '-'}}</label>
+                    <label class="font-weight-bold">{{allSeriesList[0].series_name || '-'}}</label>
                     <input numbers-only hide-zero type="text" ng-model="seriesOne" class="inputbox-control" maxlength="5" placeholder="2X">
                   </div>
                   <div class="col">
-                    <label for="inputPassword4" class="font-weight-bold">{{allSeriesList[1].series_name || '-'}}</label>
+                    <label class="font-weight-bold">{{allSeriesList[1].series_name || '-'}}</label>
                     <input numbers-only hide-zero type="text" ng-model="seriesTwo" class="inputbox-control" maxlength="5" placeholder="5X">
                   </div>
                   <div class="col">
-                    <label for="inputPassword4" class="font-weight-bold">{{allSeriesList[2].series_name || '-'}}</label>
+                    <label class="font-weight-bold">{{allSeriesList[2].series_name || '-'}}</label>
                     <input numbers-only hide-zero type="text" ng-model="seriesThree" class="inputbox-control" maxlength="5" placeholder="2X">
                   </div>
                 </div>

@@ -243,3 +243,8 @@ h5 {
   line-height: 1.2;
   color: antiquewhite;
 }
+.highlightText {
+  color : blue;
+  background-color : #06f106;
+  border-radius: 5px;
+};

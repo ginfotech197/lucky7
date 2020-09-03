@@ -278,22 +278,7 @@ app.controller('MainController', function($cookies,$scope,$q,$mdDialog,$timeout,
             .ok('Yes')
             .cancel('No');
         $mdDialog.show(confirm).then(function() {
-            $scope.unsetUserData();
-            // var request = $http({
-            //     method: 'POST',
-            //     url: api_url+"/v1/logout",
-            //     dataType:JSON,
-            //     data: {
-            //         uid: $scope.users.userId,
-            //         userCategoryId: $scope.users.person_category_id
-            //     },
-            //     headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-            // }).then(function(response){
-            //     if(response.data == 1){
-            //         $scope.unsetUserData();
-            //     }
-            //  });
-          
+            $scope.unsetUserData();          
         }, function() {
             //not to Logout
         });
@@ -410,7 +395,7 @@ app.controller('MainController', function($cookies,$scope,$q,$mdDialog,$timeout,
     
     $scope.playAudio = function() {
         var audio = new Audio('audio/wuerfelbecher.wav');
-        console.log(audio);
+        // console.log(audio);
 
         const playPromise = audio.play();
         if (playPromise !== null){

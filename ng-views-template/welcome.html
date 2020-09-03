@@ -78,14 +78,25 @@
               </div>
               <button type="submit" ng-click="validateUser()" class="btn-primary mb-2">Login</button>
           </form>
-          <div class="form-group mt-5" style="font-size: large;" ng-show="loginDetails.isLoggedIn">
+          <div class="mt-5" style="font-size: large;" ng-show="loginDetails.isLoggedIn">
               <span class="text-left pl-5" >Terminal id: <b>{{users.userLoginid}}</b>
               <span class="text-left">Agent:<b>{{users.person_name}} </b></span>
-              <span class="text-left">Balance:  <b>{{users.userId? loggedInTerminalBalance.current_balance : ''}} </b></span>
+              <span class="text-left" id="current-point">Point:  <b>{{users.userId? loggedInTerminalBalance.current_balance : ''}} </b></span>
               <span class="text-right" ng-show="reportArray.barcode">Player:  <b>{{reportArray.barcode? reportArray.barcode : ''}} </b></span>
+          
+                <form class="form-inline">
+                  <div class="form-group mx-sm-3 mb-2">
+                    <input type="password" style="width:200px;height:40px;font-size:x-large" ng-model="reset_password" class="form-control" placeholder="New Password">
+                  </div>
+                  <button type="submit" class="btn btn-primary mb-2" ng-click="resetPassword(reset_password)">Reset</button>
+                </form>
           </div>
       </div>
       <div class="col-3" data-ng-init="showTerminalReport=false">
+        <a href="#" ng-show="loginDetails.isLoggedIn">
+          <span class="glyphicon glyphicon-refresh" ng-click="refreshCurrentPoint()"><i class="fas fa-sync-alt fa-lg"></i>
+          </span>
+        </a>
         <button type="submit" ng-show="loginDetails.isLoggedIn" class="btn-primary mb-2" ng-click="logoutUserWithConfirmation()">Logout</button> 
         <button type="submit" ng-show="showResultDiv || showTerminalReport" class="pull-right btn-info mt-2" ng-click="showResultDiv=false;showTerminalReport=false">Home</button>
         <button type="submit" class="pull-right btn-info mt-2" ng-show="!showResultDiv" ng-click="showResultDiv=true;showTerminalReport=false;getResultListByDate(todayDate)">Result</button>
@@ -127,7 +138,7 @@
                 <div class="form-row">
                   <div class="col">
                     <label class="font-weight-bold">{{allSeriesList[0].series_name || '-'}}</label>
-                    <input numbers-only hide-zero type="text" ng-model="seriesOne" class="inputbox-control" maxlength="5" placeholder="2X">
+                    <input numbers-only hide-zero type="text" pattern="\d*" ng-model="seriesOne" class="inputbox-control" maxlength="5" placeholder="2X">
                   </div>
                   <div class="col">
                     <label class="font-weight-bold">{{allSeriesList[1].series_name || '-'}}</label>

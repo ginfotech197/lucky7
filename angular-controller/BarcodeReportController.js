@@ -97,6 +97,11 @@ app.controller("BarcodeReportCtrl", function ($scope,$http,$filter,$rootScope,da
     $scope.getTerminalDateWiseReport=function (start_date,end_date) {
         var start_date=$scope.changeDateFormat(start_date);
         var end_date=$scope.changeDateFormat(end_date);
+        var stockistId = -1;
+        var personCatTd=$scope.users.person_category_id;
+        if(personCatTd==4){
+            var stockistId = $scope.users.userId;
+        }
         var request = $http({
             method: "post",
             dataType:JSON,
@@ -104,14 +109,11 @@ app.controller("BarcodeReportCtrl", function ($scope,$http,$filter,$rootScope,da
             data: {
                 start_date: start_date,
                 end_date: end_date
+                ,stockistId: stockistId
             }
             ,headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
         }).then(function(response){
             $scope.terminalDataWiseReport=response.data; 
-            // if(select_terminal!=0){
-            //     $scope.terminalDataWiseReport=alasql("SELECT *  from ? where terminal=?",[$scope.barcodeWiseReport,select_terminal]);
-            // }
-
         });
 
     };

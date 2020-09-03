@@ -2,6 +2,58 @@ app.controller('PlayController', function($cookies,$scope,$rootScope,$q,md5,$mdD
     $scope.msg = "This is play controller";
     $scope.disableSubmitButton=true;
     $scope.showResultDiv=false;
+
+
+    $scope.refreshCurrentPoint = function(){
+        $http({
+            method: 'post',
+            url: api_url+"/v1/updateTerminalCurrentPoint",
+            dataType:JSON,
+            data: {
+                terminalId: $scope.users.userId
+            },
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        }).then(function (response){
+            var result = response.data;
+            $scope.getActiveTerminalBalance($scope.users.userId);
+            if(result.point>0){
+                toaster.pop('success','Your point is updated');
+                var myEl = angular.element( document.querySelector('#current-point'));
+                myEl.addClass('highlightText'); 
+                $timeout(function(){
+                    myEl.removeClass('highlightText'); 
+                },10000);
+            }else{
+                toaster.pop('success','Point is up to date');
+            }
+        });
+    };
+
+    $scope.resetPassword = function(reset_password){
+        $http({
+            method: 'post',
+            url: api_url+"/v1/resetPasswordByTerminal",
+            dataType:JSON,
+            data: {
+                terminalId: $scope.users.userId,
+                userPassword: reset_password
+            },
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        }).then(function (response){
+            var result = response.data;
+            if(result.success==1){
+                var confirm = $mdDialog.confirm()
+                .title('Password reset successfully')
+                .textContent('Logoin with your new password')
+                .ariaLabel('Sukanta Hui')
+                .targetEvent(event)
+                .ok('Yes');
+                $mdDialog.show(confirm).then(function() {
+                    $scope.unsetUserData();          
+                });
+            }
+        });
+    };
     
     $scope.getAllSeriesName = function(){
         $http({
@@ -26,6 +78,7 @@ app.controller('PlayController', function($cookies,$scope,$rootScope,$q,md5,$mdD
         }).then(function (response){
             $scope.winningValue = response.data;
             rollDice($scope.winningValue.dice1,$scope.winningValue.dice2);
+            $scope.sounds.sound.play();
             
         });
     };
@@ -95,8 +148,10 @@ app.controller('PlayController', function($cookies,$scope,$rootScope,$q,md5,$mdD
     $scope.$watch("counter", function() {
         if($scope.counter !== undefined){
             $scope.getCurrentDrawTime();
+            $scope.clearInputBox();
             $scope.getLastDrawresult();
             $scope.getLimitedResults();
+            $scope.sounds.sound.play();
             if($scope.loginDetails.isLoggedIn){
                 $scope.getActiveTerminalBalance($scope.loginDetails.person.id);
             }

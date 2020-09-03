@@ -28,7 +28,7 @@ app.controller("TerminalLimitCtrl", function ($scope,$http,$filter,$rootScope,da
             var stockistId=$scope.users.userId;
             var personCatTd=$scope.users.person_category_id;
             if(personCatTd==4){
-                $scope.terminalList=alasql("SELECT *  from ? where stockist_id=?",[$scope.terminalList,stockistId]);
+                $scope.terminalList=alasql("SELECT *  from ? where cast(stockist_id as number)=?",[$scope.terminalList,stockistId]);
             }
         });
     };
@@ -38,7 +38,6 @@ app.controller("TerminalLimitCtrl", function ($scope,$http,$filter,$rootScope,da
 
 
     $scope.saveTerminalRechargeData=function (limit) {
-        console.log($scope.users);
         var amount=limit.amount;
         var stockist_cur_bal=limit.terminal.stockist_current_balance;
         var recharge_master_id = $scope.users.userId;

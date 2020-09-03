@@ -31,10 +31,10 @@ app.config(function($routeProvider){
     }).when("/manualresult",{
         templateUrl : "ng-views-template/manual_result.html",
         controller: "ManualResultCtrl"
-    }).when("/custSalesReportCtrl",{
+    }).when("/terminalSummaryReport",{
         templateUrl : "ng-views-template/customer_sale_report.html",
         controller: "CustomerSaleReportCtrl"
-    }).when("/barcodereport",{
+    }).when("/terminalDateWiseReport",{
         templateUrl : "ng-views-template/barcode_report.html",
         controller: "BarcodeReportCtrl"
     }).when("/drawreport",{

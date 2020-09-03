@@ -31,7 +31,7 @@ app.controller("TerminalCtrl", function ($scope,$http,$filter,$rootScope,dateFil
         var stockistId=$scope.users.userId;
         var personCatTd=$scope.users.person_category_id;
         if(personCatTd==4){
-            $scope.terminalList=alasql("SELECT *  from ? where stockist_id=?",[$scope.terminalList,stockistId]);
+            $scope.terminalList=alasql("SELECT *  from ? where cast(stockist_id as number)=?",[$scope.terminalList,stockistId]);
         }
     });
 
@@ -76,7 +76,9 @@ app.controller("TerminalCtrl", function ($scope,$http,$filter,$rootScope,dateFil
                 tempTerminal.people_name=$scope.terminal.people_name;
                 tempTerminal.user_id=$scope.terminal.user_id;
                 tempTerminal.user_password=$scope.terminal.user_password;
-                tempTerminal.commission=$scope.terminal.commission;
+                tempTerminal.default_password=$scope.terminal.user_password;
+                tempTerminal.terminal_commission=$scope.terminal.commission;
+                tempTerminal.stockist_commission=terminal.stockist.commission;
                 $scope.terminalList.unshift(tempTerminal);
                 $scope.terminalForm.$setPristine();
             }
@@ -87,8 +89,9 @@ app.controller("TerminalCtrl", function ($scope,$http,$filter,$rootScope,dateFil
     $scope.defaultTerminal={
         person_name: ""
         ,user_id: ""
-        ,user_password: "",
-        commission:0
+        ,user_password: "12345"
+        ,default_password: ""
+        ,commission:0
     };
     $scope.terminal=$scope.defaultTerminal;
     $scope.randomPass=function(length, addUpper, addSymbols, addNums) {
@@ -147,6 +150,7 @@ app.controller("TerminalCtrl", function ($scope,$http,$filter,$rootScope,dateFil
         var stockistIndex=$scope.findObjectByKey($scope.stockistList,'id',parseInt(terminal.stockist_id));
         $scope.terminal.stockist=stockistIndex;
         $scope.terminal.commission=terminal.terminal_commission;
+        terminal.stockist_commission=terminal.stockist.commission;
         $scope.terminalForm.$setPristine();
     };
 
@@ -169,6 +173,8 @@ app.controller("TerminalCtrl", function ($scope,$http,$filter,$rootScope,dateFil
                     $scope.updateStatus = false;
                 }, 4000);
                 $scope.terminalList[$scope.updateableTerminalIndex]=$scope.terminal;
+                $scope.terminalList[$scope.updateableTerminalIndex].default_password=$scope.terminal.user_password;
+                $scope.terminalList[$scope.updateableTerminalIndex].terminal_commission=$scope.terminal.commission;
                 $scope.terminalForm.$setPristine();
             }
 
@@ -178,7 +184,7 @@ app.controller("TerminalCtrl", function ($scope,$http,$filter,$rootScope,dateFil
 
     $scope.resetTerminalDetails=function () {
         var tempStockist = $scope.terminal.stockist;
-        $scope.terminal={};
+        $scope.terminal=$scope.defaultTerminal;
         $scope.terminal.stockist = tempStockist;
         $scope.getNextUserId($scope.terminal.stockist.serial_number,$scope.terminal.stockist.id);
         $scope.isUpdateable=false;

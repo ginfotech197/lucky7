@@ -71,25 +71,25 @@
                                     <table cellpadding="0" cellspacing="0" class="table table-hover report-table text-justify">
                                         <thead>
                                             <tr>
-                                                <th class="text-left">Terminal Id</th>
-                                                <th class="text-left">Date</th>
-                                                <th class="text-left">Amount</th>
-                                                <th class="text-left">Prize value</th>
-                                                <th class="text-left">Total</th>
-                                                <th class="text-left">Commission Amount</th>
-                                                <th class="text-left">Net Payable</th>
+                                                <th class="text-center">Terminal Id</th>
+                                                <th class="text-center">Date</th>
+                                                <th class="text-center">Amount</th>
+                                                <th class="text-center">Prize</th>
+                                                <th class="text-center">Total</th>
+                                                <th class="text-center">Commi</th>
+                                                <th class="text-center">NTP</th>
                                             </tr>
                                         </thead>
 
                                         <tbody>
                                             <tr ng-repeat="x in terminalDataWiseReport" >
-                                                <td>{{(x.created_at=='Total') ? ' ' : x.terminal}}</td>
-                                                <td>{{x.created_at}}</td>
-                                                <td>{{x.amount}}</td>
-                                                <td class="text-left pl-0">{{x.prize}}</td>
-                                                <td class="text-right">{{x.terminal_commission_on_sale}}</td>
-                                                <td class="text-right">{{x.total}}</td>
-                                                <td class="text-right">{{x.net_to_pay}}</td>
+                                                <td class="text-center">{{(x.created_at=='Total') ? ' ' : x.terminal}}</td>
+                                                <td class="text-center">{{x.created_at}}</td>
+                                                <td class="text-center">{{x.amount}}</td>
+                                                <td class="text-center">{{x.prize}}</td>
+                                                <td class="text-center">{{x.total}}</td>
+                                                <td class="text-center">{{x.terminal_commission_on_sale}}</td>
+                                                <td class="text-center">{{x.net_to_pay}}</td>
                                             </tr>
                                         </tbody>
                                     </table>

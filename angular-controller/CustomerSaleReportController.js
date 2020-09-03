@@ -44,10 +44,15 @@ app.controller("CustomerSaleReportCtrl", function ($scope,$http,$filter,$rootSco
     $scope.getAllTerminalTotalSale=function (start_date,end_date) {        
         var start_date=$scope.changeDateFormat(start_date);
         var end_date=$scope.changeDateFormat(end_date);
+        var stockistId = -1;
         if(start_date > end_date){
             var temp=start_date;
             start_date=end_date;
             end_date=temp;
+        }
+        var personCatTd=$scope.users.person_category_id;
+        if(personCatTd==4){
+            var stockistId = $scope.users.userId;
         }
         var request = $http({
             method: "post",
@@ -56,24 +61,11 @@ app.controller("CustomerSaleReportCtrl", function ($scope,$http,$filter,$rootSco
             data: {
                 start_date: start_date
                 ,end_date: end_date
+                ,stockistId: stockistId
             }
             ,headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
         }).then(function(response){
-            $scope.saleReport=response.data;
-            // var stockistId=$scope.users.userLoginid;
-            // var personCatTd=$scope.users.person_category_id;
-            // if(personCatTd==4){
-            //     $scope.saleReport=alasql("SELECT *  from ? where stockist_user_id=?",[$scope.saleReport,stockistId]);
-            // }else{
-            //     if(select_stockist!=0){
-            //         $scope.saleReport=alasql("SELECT *  from ? where stockist_user_id=?",[$scope.saleReport,select_stockist]);
-            //     }
-            // }
-
-           
-            // if(select_terminal!=0){
-            //     $scope.saleReport=alasql("SELECT *  from ? where user_id=?",[$scope.saleReport,select_terminal]);
-            // }       
+            $scope.saleReport=response.data;    
 
         });
 

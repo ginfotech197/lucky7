@@ -98,8 +98,13 @@
                                                     <tr ng-repeat="x in saleReport">
                                                         <td class="p-0 text-center">{{$index+1}}</td>
                                                         <td class="p-0 text-center">{{x.terminal}}</td>
-                                                        <td class="p-0 text-center"> {{x.agent_name}}</td>
-                                                        <td class="p-0 text-center">{{x.stockist_name}}</td>
+                                                        <td class="p-0 text-center"> 
+                                                            <span ng-if="x.agent_name">{{x.agent_name}}</span>
+                                                            <span ng-if="!x.agent_name && x.terminal" class="font-weight-bold">Total</span>
+                                                            <span ng-if="!x.agent_name && !x.terminal" class="font-weight-bold">Grand Total</span>
+                                                            
+                                                        </td>
+                                                        <td class="p-0 text-center">{{(x.terminal)?x.stockist_name:''}}</td>
                                                         <td class="p-0 text-center">{{x.amount}}</td>
                                                         <td class="p-0 text-center">{{x.prize}}</td>
                                                         <td class="p-0 text-center">{{x.terminal_commission_on_sale}}</td>

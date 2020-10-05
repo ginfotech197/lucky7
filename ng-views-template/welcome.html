@@ -57,7 +57,11 @@
   input[type="password"]::placeholder {                    
       /* Firefox, Chrome, Opera */ 
       text-align: center; 
-  } 
+  }
+  input[type="tel"]::placeholder {                    
+      /* Firefox, Chrome, Opera */ 
+      text-align: center; 
+  }  
  
 </style>
 
@@ -110,7 +114,7 @@
 
     <div class="row">
       <div class="col-2 {{resultBgColor[$index]}} text-center" data-ng-repeat="res in resultBgColor track by $index">
-        <span class="result-font">{{(resultsInTop[$index].end_time)?(resultsInTop[$index].end_time | limitTo:5) : '_:_'}}</span><br>
+        <span class="result-font">{{(resultsInTop[$index].end_time)?(resultsInTop[$index].end_time | limitTo:5) : 'xx:xx'}}</span><br>
         <span class="result-font">{{resultsInTop[$index].game_initial || '______'}}</span><br>
         <span class="">
           <img ng-if="resultsInTop[$index].dice1" ng-src="img/result/dice{{resultsInTop[$index].dice1}}-res.png" alt="" width="50px" height="50px">
@@ -283,10 +287,10 @@
         Viewing this website is on your own risk. All the information shown here is sponsored and we warn you that Amusement  Numbers are only for fun.
         We are not responsible for any issues or scam. We respect all country, state rules/laws. If you not agree with our site disclaimer. Please quit our site right now.
         @Copyright2019 All rights reserved to Lucky7 software development company
+        <div id="MyClockDisplay" class="clock display-3" onload="showTime()"></div>
       </div>
        
 
         <audio id="dice-audio" style="display: none;" pk-audio="sounds.sound" controls="" src="audio/wuerfelbecher.wav"></audio>
-        <!-- <audio id="dice-audio" style="display: none;" controls="" src="audio/wuerfelbecher.wav"></audio> -->
   </div>
 

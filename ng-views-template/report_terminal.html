@@ -1,4 +1,4 @@
-<div data-ng-controller="ReportTerminalCtrl" ng-init="ticketDetails=false;transactionDetails=false" style="min-height: 300px;background-image: linear-gradient( #33020a,#900 );" class="text-white">
+<div data-ng-controller="ReportTerminalCtrl" data-ng-if="loginDetails.isLoggedIn" ng-init="ticketDetails=false;transactionDetails=false" style="min-height: 300px;background-image: linear-gradient( #33020a,#900 );" class="text-white">
     <style type="text/css">
       
         .report-table tr th,.report-table tr td{

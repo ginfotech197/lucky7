@@ -1,4 +1,4 @@
-app.controller('MainController', function($cookies,$scope,$q,$mdDialog,$timeout,$interval,toaster,$http,UserService,$q,RegistrationService,ParticipantService,$window,proofService,localStorageService,$rootScope,$auth) {
+app.controller('MainController', function($cookies,$scope,$q,$mdDialog,$timeout,$interval,toaster,$http,UserService,$q,RegistrationService,ParticipantService,$window,proofService,localStorageService,$rootScope,$auth,authFact) {
 
     //for showing developer area, creating a developer mode object
     $scope.title="Lucky 7";
@@ -68,13 +68,15 @@ app.controller('MainController', function($cookies,$scope,$q,$mdDialog,$timeout,
 
      try {
         $scope.loginDetails=localStorageService.get('loginData') || $scope.loginDetails;
+        $scope.token = $scope.loginDetails.person.uuid;
         if($scope.loginDetails.isLoggedIn && $scope.loginDetails.person.person_category_id == 1){
         
+            authFact.setAccessToken($scope.token);
             $window.location.href = base_url + '#!/admin';
             
         }
         if($scope.loginDetails.isLoggedIn && $scope.loginDetails.person.person_category_id == 4){
-           
+            authFact.setAccessToken($scope.token);
             $window.location.href = base_url + '#!/stockistPanel';
             
         }
@@ -220,6 +222,7 @@ app.controller('MainController', function($cookies,$scope,$q,$mdDialog,$timeout,
             $scope.loginDetails=data;
             $scope.token = $scope.loginDetails.person.uuid;
             $auth.setToken($scope.token);
+            authFact.setAccessToken($scope.token);
             $scope.getActiveTerminalBalance($scope.loginDetails.person.id);
             toaster.pop('success',data.msg,' Welcome '+ $scope.users.person_name);
 
@@ -278,7 +281,19 @@ app.controller('MainController', function($cookies,$scope,$q,$mdDialog,$timeout,
             .ok('Yes')
             .cancel('No');
         $mdDialog.show(confirm).then(function() {
-            $scope.unsetUserData();          
+            var request = $http({
+                method: 'POST',
+                url: api_url+"/v1/logout",
+                dataType:JSON,
+                data: {
+                    uid: $scope.users.userId,
+                    userCategoryId: $scope.users.person_category_id
+                },
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+            }).then(function(response){
+                $scope.unsetUserData();
+                authFact.unsetAccessToken();
+             });         
         }, function() {
             //not to Logout
         });
@@ -303,6 +318,7 @@ app.controller('MainController', function($cookies,$scope,$q,$mdDialog,$timeout,
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
         }).then(function (response){
             var timeDetailsObj = response.data;
+            var test = new Date(timeDetailsObj.timeInMilliSeconds);
             $scope.currentDateTime = timeDetailsObj.dateTime;
             $scope.currentTime = timeDetailsObj.time;
             $scope.timeInArray = $scope.currentTime.split(':');
@@ -311,20 +327,23 @@ app.controller('MainController', function($cookies,$scope,$q,$mdDialog,$timeout,
             $scope.second = $scope.timeInArray[2];
             $interval(function () { 
                 $scope.currentTimeObj = {};
-                if ($scope.hour == 23 && $scope.minute ==59)   {
+                if ($scope.hour == 23 && $scope.minute ==59 && $scope.second>58)   {
                     $scope.hour = 0;
                     $scope.minute = 0;
                     $scope.second = 1;
                 }
-                if($scope.second == 59){
-                    $scope.minute++;
+                if($scope.second > 58 && $scope.minute == 59){
+                    $scope.minute = 0;
+                    $scope.second = 1;
+                    $scope.hour++;
+                    if($scope.hour ==24){
+                        $scope.hour = 0;
+                    }
+                }else if($scope.second > 58){
                     $scope.second = 0;
+                    $scope.minute++;
                 }else{
                     $scope.second++;
-                }
-                if($scope.minute == 59){
-                    $scope.hour++;
-                    $scope.minute = 0;
                 }
                 $scope.currentTimeObj.hour = $scope.hour;
                 $scope.currentTimeObj.minute = $scope.minute;
@@ -395,16 +414,10 @@ app.controller('MainController', function($cookies,$scope,$q,$mdDialog,$timeout,
     
     $scope.playAudio = function() {
         var audio = new Audio('audio/wuerfelbecher.wav');
-        // console.log(audio);
-
         const playPromise = audio.play();
         if (playPromise !== null){
             playPromise.catch(() => { audio.play(); })
         }
     };
-
-    // $scope.$watch('$viewContentLoaded', function(){
-    //     angular.element('#play-sound').triggerHandler('click');
-    //  });
 
 });

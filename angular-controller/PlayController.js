@@ -126,14 +126,14 @@ app.controller('PlayController', function($cookies,$scope,$rootScope,$q,md5,$mdD
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
         }).then(function (response){
             $scope.counter = response.data.next_draw_id;
+            var tempdate = new Date();
         });
     };
 
 
     $scope.getNewDraw();
     $interval(function () {
-        $scope.getNewDraw();  
-        console.log($scope.hour,$scope.minute,$scope.second);
+        $scope.getNewDraw();
         if($scope.hour>=22){
             $scope.disableSubmitButton = true;
         }else{

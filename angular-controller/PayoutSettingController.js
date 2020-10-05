@@ -1,54 +1,64 @@
 app.controller("PayoutSettingCtrl", function ($scope,$http,$filter,$rootScope,dateFilter,$timeout,$interval,$window) {
-    $scope.msg = "This is PayoutSettingCtrl controller";
-    $scope.tab = 1;
+    
+    try {
+        // if(!$scope.loginDetails.isLoggedIn && $scope.loginDetails.person.person_category_id != 1 && $scope.loginDetails.person.person_category_id != 4){        
+        //     $window.location.href = base_url;         
+        // }
 
-    $scope.setTab = function(newTab){
-        $scope.tab = newTab;
-    };
-    $scope.isSet = function(tabNum){
-        return $scope.tab === tabNum;
-    };
+        $scope.msg = "This is PayoutSettingCtrl controller";
+        $scope.tab = 1;
 
-    $scope.selectedTab = {
-        "color" : "white",
-        "background-color" : "coral",
-        "font-size" : "15px",
-        "padding" : "5px"
-    };
+        $scope.setTab = function(newTab){
+            $scope.tab = newTab;
+        };
+        $scope.isSet = function(tabNum){
+            return $scope.tab === tabNum;
+        };
 
-    $scope.submitGamePayout=function(twoDigitPayOut){
-        var tdp=angular.copy(twoDigitPayOut);
+        $scope.selectedTab = {
+            "color" : "white",
+            "background-color" : "coral",
+            "font-size" : "15px",
+            "padding" : "5px"
+        };
+
+        $scope.submitGamePayout=function(twoDigitPayOut){
+            var tdp=angular.copy(twoDigitPayOut);
+            var request = $http({
+                method: "post",
+                url: api_url+"/v1/setGamePayout",
+                dataType:JSON,
+                data: {
+                    twoDigitPayOut: tdp
+                }
+                ,headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+            }).then(function(response){
+                $scope.payOutReport=response.data;
+                if($scope.payOutReport.success==1){
+                    $scope.payoutStatus=true;
+                    $timeout(function() {
+                        $scope.payoutStatus = false;
+                    }, 5000);
+                }
+            });
+        };
+
+        $scope.defaultLimit={};
+        $scope.limit=angular.copy($scope.defaultLimit);
+
+
         var request = $http({
-            method: "post",
-            url: api_url+"/v1/setGamePayout",
+            method: "get",
+            url: api_url+"/v1/getPlaySeries",
             dataType:JSON,
-            data: {
-                twoDigitPayOut: tdp
-            }
+            data: {}
             ,headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
         }).then(function(response){
-            $scope.payOutReport=response.data;
-            if($scope.payOutReport.success==1){
-                $scope.payoutStatus=true;
-                $timeout(function() {
-                    $scope.payoutStatus = false;
-                }, 5000);
-            }
+            $scope.TwoDigitPayOut=response.data;
         });
-    };
-
-    $scope.defaultLimit={};
-    $scope.limit=angular.copy($scope.defaultLimit);
-
-
-    var request = $http({
-        method: "get",
-        url: api_url+"/v1/getPlaySeries",
-        dataType:JSON,
-        data: {}
-        ,headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-    }).then(function(response){
-        $scope.TwoDigitPayOut=response.data;
-    });
+      }
+      catch(err) {
+        console.log("Error: " + err + ".");
+      }
 });
 

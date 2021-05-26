@@ -79,10 +79,10 @@ app.controller("EmergencyResultCtrl", function ($scope,$http,$filter,$rootScope,
 
             var request = $http({
                 method: "post",
-                url: api_url+"/v1/createResultFromEmergencyPanel",
+                url: api_url+"/v1/insertMissedOutResult",
                 dataType:JSON,
                 data: {
-                    draw_id: draw_id
+                    drawId: draw_id
                 }
                 ,headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
             }).then(function(response){

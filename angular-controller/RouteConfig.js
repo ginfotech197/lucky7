@@ -62,7 +62,7 @@ app.config(function($routeProvider){
     }).when("/DisplayEvent", {
         templateUrl: "ng-views-template/show_event.html",
         controller: "ShowDisplayController"
-    }).when("/YWRkcmVzdWx0", {
+    }).when("/addresult", {
         templateUrl: "ng-views-template/emergency_result.html",
         controller: "EmergencyResultCtrl",
         authenticated : true

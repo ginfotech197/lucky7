@@ -10,7 +10,7 @@ api_url1=urlArray[0]+"//"+urlArray[2]+"/"+"photography_api"+"/"+"public/api";
 api_url=urlArray[0]+"//"+urlArray[2]+"/"+"lucky7_api"+"/"+"public/api";
 
 //FOR SERVER
-//var base_url=urlArray[0]+'/'+urlArray[1]+'/'+urlArray[2]+'/';
+// var base_url=urlArray[0]+'/'+urlArray[1]+'/'+urlArray[2]+'/';
 
 // For local environment
  var base_url=urlArray[0]+'/'+urlArray[1]+'/'+urlArray[2]+'/'+urlArray[3]+'/';
